@@ -27,6 +27,11 @@ const mainNavItems: NavItem[] = [
         href: '/users',
         icon: Folder,
     },
+    {
+        title: 'Membresías',
+        href: '/membresias',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

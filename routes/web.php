@@ -16,6 +16,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::resource('users', \App\Http\Controllers\UserController::class);
+    Route::resource('membresias', \App\Http\Controllers\MembresiaController::class);
 });
 
 require __DIR__ . '/settings.php';
