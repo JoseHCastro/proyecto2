@@ -70,6 +70,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
     *,
     ::after,
     ::before,
@@ -80,6 +81,7 @@
 }
 
 @layer utilities {
+
     body,
     html {
         --font-sans:
@@ -162,11 +164,125 @@
     --sidebar: hsl(240 5.9% 10%);
 }
 
+/* Kids Theme */
+[data-theme="kids"] {
+    --primary: hsl(211 100% 65%);
+    /* #4DA3FF */
+    --primary-foreground: hsl(0 0% 100%);
+    --secondary: hsl(256 100% 74%);
+    /* #A07CFF */
+    --secondary-foreground: hsl(0 0% 100%);
+    --accent: hsl(48 100% 67%);
+    /* #FFDD57 */
+    --accent-foreground: hsl(0 0% 10%);
+    --radius: 1rem;
+    /* Rounder for kids */
+    --font-size-base: 0.95rem;
+}
+
+[data-theme="kids"].dark {
+    --background: hsl(210 33% 9%);
+    /* #101820 */
+    --foreground: hsl(204 20% 96%);
+    /* #F2F5F7 */
+    --primary: hsl(214 66% 53%);
+    /* #357EDB */
+    --secondary: hsl(255 81% 69%);
+    /* #8E6EF0 */
+    --accent: hsl(45 87% 62%);
+    /* #F2C94C */
+    --card: hsl(210 33% 12%);
+    --card-foreground: hsl(204 20% 96%);
+    --popover: hsl(210 33% 12%);
+    --popover-foreground: hsl(204 20% 96%);
+    --muted: hsl(210 33% 15%);
+    --muted-foreground: hsl(204 20% 70%);
+    --border: hsl(210 33% 20%);
+    --input: hsl(210 33% 20%);
+}
+
+/* Teens Theme */
+[data-theme="teens"] {
+    --primary: hsl(135 71% 62%);
+    /* #5BE37D */
+    --primary-foreground: hsl(0 0% 10%);
+    --secondary: hsl(210 11% 21%);
+    /* #2F353B */
+    --secondary-foreground: hsl(0 0% 100%);
+    --accent: hsl(193 100% 50%);
+    /* #00C6FF */
+    --accent-foreground: hsl(0 0% 10%);
+    --radius: 0.5rem;
+    /* Standard */
+    --font-size-base: 1rem;
+}
+
+[data-theme="teens"].dark {
+    --background: hsl(204 17% 6%);
+    /* #0C0F11 */
+    --foreground: hsl(206 13% 91%);
+    /* #E5E9EC */
+    --primary: hsl(138 54% 52%);
+    /* #43C56A */
+    --secondary: hsl(210 12% 13%);
+    /* #1E2226 */
+    --accent: hsl(193 100% 40%);
+    /* #00A0CC */
+    --card: hsl(204 17% 9%);
+    --card-foreground: hsl(206 13% 91%);
+    --popover: hsl(204 17% 9%);
+    --popover-foreground: hsl(206 13% 91%);
+    --muted: hsl(204 17% 12%);
+    --muted-foreground: hsl(206 13% 70%);
+    --border: hsl(204 17% 15%);
+    --input: hsl(204 17% 15%);
+}
+
+/* Adults Theme */
+[data-theme="adults"] {
+    --primary: hsl(0 73% 41%);
+    /* #B71C1C */
+    --primary-foreground: hsl(0 0% 100%);
+    --secondary: hsl(0 0% 95%);
+    /* #F2F2F2 */
+    --secondary-foreground: hsl(0 0% 10%);
+    --accent: hsl(0 0% 11%);
+    /* #1C1C1C */
+    --accent-foreground: hsl(0 0% 100%);
+    --radius: 0.25rem;
+    /* Sharper */
+    --font-size-base: 1.1rem;
+}
+
+[data-theme="adults"].dark {
+    --background: hsl(0 0% 0%);
+    /* #000000 */
+    --foreground: hsl(0 0% 100%);
+    /* #FFFFFF */
+    --primary: hsl(0 73% 32%);
+    /* #8F1616 */
+    --secondary: hsl(0 0% 80%);
+    /* #CCCCCC */
+    --secondary-foreground: hsl(0 0% 0%);
+    --accent: hsl(0 0% 0%);
+    /* #000000 */
+    --card: hsl(0 0% 5%);
+    --card-foreground: hsl(0 0% 100%);
+    --popover: hsl(0 0% 5%);
+    --popover-foreground: hsl(0 0% 100%);
+    --muted: hsl(0 0% 10%);
+    --muted-foreground: hsl(0 0% 70%);
+    --border: hsl(0 0% 15%);
+    --input: hsl(0 0% 15%);
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
     }
+
     body {
         @apply bg-background text-foreground;
+        font-size: var(--font-size-base, 1rem);
     }
 }

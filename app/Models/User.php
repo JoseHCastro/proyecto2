@@ -11,7 +11,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+    use HasFactory, Notifiable, TwoFactorAuthenticatable, \Spatie\Permission\Traits\HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'ci',
+        'telefono',
+        'estado',
     ];
 
     /**
@@ -48,5 +51,35 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function mediciones(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(MedicionProgreso::class, 'socio_id');
+    }
+
+    public function instructores(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Instructor::class, 'usuario_id');
+    }
+
+    public function suscripciones(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Suscripcion::class, 'usuario_id');
+    }
+
+    public function pagos(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Pago::class, 'usuario_id');
+    }
+
+    public function asistencias(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Asistencia::class, 'socio_id');
+    }
+
+    public function rutinas(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Rutina::class, 'socio_id');
     }
 }
