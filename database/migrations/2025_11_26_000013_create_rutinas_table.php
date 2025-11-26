@@ -10,7 +10,7 @@ return new class extends Migration {
         Schema::create('rutinas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('socio_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('instructor_id')->constrained('instructores')->onDelete('cascade');
+            $table->foreignId('instructor_id')->constrained('users')->onDelete('cascade');
             $table->string('ejercicio');
             $table->integer('series');
             $table->integer('repeticiones');

@@ -29,6 +29,6 @@ class Rutina extends Model
 
     public function instructor(): BelongsTo
     {
-        return $this->belongsTo(Instructor::class);
+        return $this->belongsTo(User::class, 'instructor_id');
     }
 }

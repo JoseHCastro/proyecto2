@@ -20,7 +20,9 @@ const themes = [
     { value: 'adults', label: 'Adultos (Adults)' },
 ];
 
-const modes = [
+import { type Appearance } from '@/composables/useAppearance';
+
+const modes: { value: Appearance; label: string; icon: any }[] = [
     { value: 'light', label: 'Día', icon: Sun },
     { value: 'dark', label: 'Noche', icon: Moon },
     { value: 'system', label: 'Automático', icon: Monitor },

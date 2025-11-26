@@ -10,8 +10,12 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-require __DIR__.'/settings.php';
+    Route::resource('users', \App\Http\Controllers\UserController::class);
+});
+
+require __DIR__ . '/settings.php';

@@ -153,5 +153,16 @@ return [
         ],
     ],
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'nombre',
+        'email' => 'correo electrónico',
+        'password' => 'contraseña',
+        'password_confirmation' => 'confirmación de contraseña',
+        'ci' => 'carnet de identidad',
+        'telefono' => 'teléfono',
+        'estado' => 'estado',
+        'role' => 'rol',
+        'especialidades' => 'especialidades',
+        'biografia' => 'biografía',
+    ],
 ];

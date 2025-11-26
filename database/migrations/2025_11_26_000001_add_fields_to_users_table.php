@@ -8,16 +8,19 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('ci')->nullable();
+            $table->string('ci')->nullable()->unique();
             $table->string('telefono')->nullable();
             $table->string('estado')->default('activo');
+            $table->string('especialidades')->nullable();
+            $table->text('biografia')->nullable();
         });
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['ci', 'telefono', 'estado']);
+            $table->dropUnique(['ci']);
+            $table->dropColumn(['ci', 'telefono', 'estado', 'especialidades', 'biografia']);
         });
     }
 };

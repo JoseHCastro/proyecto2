@@ -177,7 +177,17 @@
     --accent-foreground: hsl(0 0% 10%);
     --radius: 1rem;
     /* Rounder for kids */
-    --font-size-base: 0.95rem;
+    --font-size-base: 0.9rem;
+
+    /* Sidebar colors */
+    --sidebar-background: hsl(211 100% 95%);
+    --sidebar-foreground: hsl(211 100% 20%);
+    --sidebar-primary: hsl(211 100% 65%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(256 100% 90%);
+    --sidebar-accent-foreground: hsl(256 100% 30%);
+    --sidebar-border: hsl(211 100% 85%);
+    --sidebar-ring: hsl(211 100% 65%);
 }
 
 [data-theme="kids"].dark {
@@ -199,6 +209,16 @@
     --muted-foreground: hsl(204 20% 70%);
     --border: hsl(210 33% 20%);
     --input: hsl(210 33% 20%);
+
+    /* Sidebar colors */
+    --sidebar-background: hsl(210 33% 7%);
+    --sidebar-foreground: hsl(204 20% 90%);
+    --sidebar-primary: hsl(214 66% 53%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(255 81% 20%);
+    --sidebar-accent-foreground: hsl(255 81% 90%);
+    --sidebar-border: hsl(210 33% 15%);
+    --sidebar-ring: hsl(214 66% 53%);
 }
 
 /* Teens Theme */
@@ -214,7 +234,17 @@
     --accent-foreground: hsl(0 0% 10%);
     --radius: 0.5rem;
     /* Standard */
-    --font-size-base: 1rem;
+    --font-size-base: 1.05rem;
+
+    /* Sidebar colors */
+    --sidebar-background: hsl(135 71% 95%);
+    --sidebar-foreground: hsl(135 71% 20%);
+    --sidebar-primary: hsl(135 71% 62%);
+    --sidebar-primary-foreground: hsl(0 0% 10%);
+    --sidebar-accent: hsl(193 100% 90%);
+    --sidebar-accent-foreground: hsl(193 100% 20%);
+    --sidebar-border: hsl(135 71% 85%);
+    --sidebar-ring: hsl(135 71% 62%);
 }
 
 [data-theme="teens"].dark {
@@ -236,6 +266,16 @@
     --muted-foreground: hsl(206 13% 70%);
     --border: hsl(204 17% 15%);
     --input: hsl(204 17% 15%);
+
+    /* Sidebar colors */
+    --sidebar-background: hsl(204 17% 4%);
+    --sidebar-foreground: hsl(206 13% 85%);
+    --sidebar-primary: hsl(138 54% 52%);
+    --sidebar-primary-foreground: hsl(0 0% 10%);
+    --sidebar-accent: hsl(193 100% 15%);
+    --sidebar-accent-foreground: hsl(193 100% 80%);
+    --sidebar-border: hsl(204 17% 12%);
+    --sidebar-ring: hsl(138 54% 52%);
 }
 
 /* Adults Theme */
@@ -251,7 +291,17 @@
     --accent-foreground: hsl(0 0% 100%);
     --radius: 0.25rem;
     /* Sharper */
-    --font-size-base: 1.1rem;
+    --font-size-base: 1.15rem;
+
+    /* Sidebar colors */
+    --sidebar-background: hsl(0 0% 97%);
+    --sidebar-foreground: hsl(0 0% 15%);
+    --sidebar-primary: hsl(0 73% 41%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(0 0% 92%);
+    --sidebar-accent-foreground: hsl(0 0% 20%);
+    --sidebar-border: hsl(0 0% 88%);
+    --sidebar-ring: hsl(0 73% 41%);
 }
 
 [data-theme="adults"].dark {
@@ -274,6 +324,16 @@
     --muted-foreground: hsl(0 0% 70%);
     --border: hsl(0 0% 15%);
     --input: hsl(0 0% 15%);
+
+    /* Sidebar colors */
+    --sidebar-background: hsl(0 0% 2%);
+    --sidebar-foreground: hsl(0 0% 90%);
+    --sidebar-primary: hsl(0 73% 32%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(0 0% 8%);
+    --sidebar-accent-foreground: hsl(0 0% 85%);
+    --sidebar-border: hsl(0 0% 12%);
+    --sidebar-ring: hsl(0 73% 32%);
 }
 
 @layer base {
@@ -281,8 +341,58 @@
         @apply border-border outline-ring/50;
     }
 
+    html {
+        font-size: var(--font-size-base, 1rem);
+        transition: font-size 0.3s ease;
+    }
+
     body {
         @apply bg-background text-foreground;
-        font-size: var(--font-size-base, 1rem);
     }
+}
+
+/* SweetAlert2 Custom Styles */
+.swal-kids-popup {
+    border-radius: 1rem !important;
+    font-family: 'Comic Sans MS', 'Instrument Sans', sans-serif !important;
+}
+
+.swal-kids-confirm {
+    border-radius: 1rem !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 2rem !important;
+}
+
+.swal-kids-cancel {
+    border-radius: 1rem !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 2rem !important;
+}
+
+.swal-teens-popup {
+    border-radius: 0.5rem !important;
+}
+
+.swal-teens-confirm {
+    border-radius: 0.5rem !important;
+    font-weight: 500 !important;
+}
+
+.swal-teens-cancel {
+    border-radius: 0.5rem !important;
+    font-weight: 500 !important;
+}
+
+.swal-adults-popup {
+    border-radius: 0.25rem !important;
+}
+
+.swal-adults-confirm {
+    border-radius: 0.25rem !important;
+    font-weight: 600 !important;
+}
+
+.swal-adults-cancel {
+    border-radius: 0.25rem !important;
+    font-weight: 600 !important;
 }
