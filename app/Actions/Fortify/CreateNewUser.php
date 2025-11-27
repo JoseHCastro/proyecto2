@@ -3,6 +3,12 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use BaconQrCode\Renderer\ImageRenderer;
+use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
+use BaconQrCode\Renderer\RendererStyle\RendererStyle;
+use BaconQrCode\Writer;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -27,13 +33,51 @@ class CreateNewUser implements CreatesNewUsers
                 'max:255',
                 Rule::unique(User::class),
             ],
+            'telefono' => ['required', 'string', 'max:20'],
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
+            'telefono' => $input['telefono'],
             'password' => $input['password'],
+            'estado' => 'activo', // Estado activo por defecto
         ]);
+
+        // Asignar rol de Cliente automáticamente
+        $user->assignRole('Cliente');
+
+        // Generar QR automáticamente
+        $this->generarQr($user);
+
+        return $user;
+    }
+
+    /**
+     * Genera el código QR para el usuario
+     */
+    private function generarQr(User $user): void
+    {
+        try {
+            // Generar QR con el email del cliente como PNG
+            $renderer = new ImageRenderer(
+                new RendererStyle(400),
+                new ImagickImageBackEnd()
+            );
+            $writer = new Writer($renderer);
+            $qrCode = $writer->writeString($user->email);
+
+            // Guardar en storage/app/public/qr
+            $filename = 'qr_' . md5($user->email) . '.png';
+            Storage::disk('public')->put('qr/' . $filename, $qrCode);
+
+            // Actualizar usuario con la URL del QR
+            $user->update([
+                'url_qr' => 'qr/' . $filename,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al generar QR para usuario: ' . $e->getMessage());
+        }
     }
 }

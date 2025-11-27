@@ -94,17 +94,23 @@ class UserController extends Controller
     {
         $user->load('roles');
         
-        // Si el usuario es Cliente, cargar sus mediciones de progreso
+        // Si el usuario es Cliente, cargar sus mediciones de progreso y asistencias
         $mediciones = [];
+        $asistencias = [];
         if ($user->hasRole('Cliente')) {
             $mediciones = \App\Models\MedicionProgreso::where('socio_id', $user->id)
                 ->orderBy('medido_en', 'desc')
+                ->get();
+            
+            $asistencias = \App\Models\Asistencia::where('socio_id', $user->id)
+                ->orderBy('asistio_en', 'desc')
                 ->get();
         }
         
         return Inertia::render('Users/Show', [
             'user' => $user,
             'mediciones' => $mediciones,
+            'asistencias' => $asistencias,
         ]);
     }
 

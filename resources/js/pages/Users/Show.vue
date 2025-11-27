@@ -10,12 +10,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Pencil, ArrowLeft, Plus, Trash2, Scale, Ruler } from 'lucide-vue-next';
+import { Pencil, ArrowLeft, Plus, Trash2, Scale, Ruler, Calendar, Clock } from 'lucide-vue-next';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
 
 const props = defineProps({
     user: Object,
     mediciones: Array,
+    asistencias: Array,
 });
 
 const isDialogOpen = ref(false);
@@ -310,6 +311,61 @@ const calcularIMC = (peso, estatura) => {
 
                             <div v-else class="text-center py-8 text-muted-foreground">
                                 <p>No hay mediciones de progreso registradas</p>
+                            </div>
+                        </div>
+
+                        <!-- Sección de Asistencia (solo para Cliente) -->
+                        <div v-if="user.roles.some(r => r.name === 'Cliente')" class="border-t pt-6 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium">Asistencia</h3>
+                                <Badge variant="secondary">
+                                    Total: {{ asistencias?.length || 0 }}
+                                </Badge>
+                            </div>
+
+                            <!-- Lista de asistencias -->
+                            <div v-if="asistencias && asistencias.length > 0" class="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Fecha</TableHead>
+                                            <TableHead>Hora</TableHead>
+                                            <TableHead>Día de la Semana</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        <TableRow v-for="asistencia in asistencias" :key="asistencia.id">
+                                            <TableCell class="font-medium">
+                                                <div class="flex items-center gap-2">
+                                                    <Calendar class="h-4 w-4 text-muted-foreground" />
+                                                    {{ new Date(asistencia.asistio_en).toLocaleDateString('es-ES', { 
+                                                        day: '2-digit', 
+                                                        month: '2-digit', 
+                                                        year: 'numeric' 
+                                                    }) }}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div class="flex items-center gap-2">
+                                                    <Clock class="h-4 w-4 text-muted-foreground" />
+                                                    {{ new Date(asistencia.asistio_en).toLocaleTimeString('es-ES', { 
+                                                        hour: '2-digit', 
+                                                        minute: '2-digit' 
+                                                    }) }}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                {{ new Date(asistencia.asistio_en).toLocaleDateString('es-ES', { 
+                                                    weekday: 'long' 
+                                                }) }}
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </div>
+
+                            <div v-else class="text-center py-8 text-muted-foreground">
+                                <p>No hay asistencias registradas</p>
                             </div>
                         </div>
                     </CardContent>

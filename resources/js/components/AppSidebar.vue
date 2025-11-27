@@ -62,6 +62,21 @@ const mainNavItems: NavItem[] = [
         href: '/rutinas',
         icon: Folder,
     },
+    {
+        title: 'Suscripciones',
+        href: '/suscripciones',
+        icon: Folder,
+    },
+    {
+        title: 'Mi QR',
+        href: '/mi-qr',
+        icon: Folder,
+    },
+    {
+        title: 'Registrar Asistencia',
+        href: '/asistencias/registrar',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

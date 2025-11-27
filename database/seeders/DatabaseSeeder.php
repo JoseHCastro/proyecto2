@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             PaqueteSeeder::class,
             RutinaSeeder::class,
             MedicionProgresoSeeder::class,
+            SuscripcionSeeder::class,
         ]);
     }
 }

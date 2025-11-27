@@ -22,11 +22,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('sesiones', \App\Http\Controllers\SesionController::class);
     Route::resource('paquetes', \App\Http\Controllers\PaqueteController::class);
     Route::resource('rutinas', \App\Http\Controllers\RutinaController::class);
+    Route::resource('suscripciones', \App\Http\Controllers\SuscripcionController::class);
+    Route::post('suscripciones/pagar/{pago}', [\App\Http\Controllers\SuscripcionController::class, 'pagarCuota'])->name('suscripciones.pagar');
+    Route::get('recibos/{pago}', [\App\Http\Controllers\ReciboController::class, 'ver'])->name('recibos.ver');
+    Route::get('recibos/{pago}/descargar', [\App\Http\Controllers\ReciboController::class, 'descargar'])->name('recibos.descargar');
     Route::post('mediciones-progreso', [\App\Http\Controllers\MedicionProgresoController::class, 'store']);
     Route::delete('mediciones-progreso/{id}', [\App\Http\Controllers\MedicionProgresoController::class, 'destroy']);
     Route::get('informacion', [\App\Http\Controllers\InformacionController::class, 'index'])->name('informacion.index');
     Route::get('informacion/edit', [\App\Http\Controllers\InformacionController::class, 'edit'])->name('informacion.edit');
     Route::put('informacion', [\App\Http\Controllers\InformacionController::class, 'update'])->name('informacion.update');
+    
+    // Rutas de QR y Asistencia
+    Route::get('mi-qr', [\App\Http\Controllers\QrController::class, 'miQr'])->name('qr.mi-qr');
+    Route::get('asistencias/registrar', [\App\Http\Controllers\AsistenciaController::class, 'index'])->name('asistencias.registrar');
+    Route::post('asistencias/registrar', [\App\Http\Controllers\AsistenciaController::class, 'registrar'])->name('asistencias.store');
 });
 
 require __DIR__ . '/settings.php';

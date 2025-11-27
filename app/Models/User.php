@@ -26,6 +26,7 @@ class User extends Authenticatable
         'estado',
         'especialidades',
         'biografia',
+        'url_qr',
     ];
 
     /**

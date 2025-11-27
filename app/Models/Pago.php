@@ -12,14 +12,17 @@ class Pago extends Model
     protected $fillable = [
         'usuario_id',
         'suscripcion_id',
+        'motivo',
         'monto',
         'metodo',
         'estado',
         'fecha',
+        'vence',
     ];
 
     protected $casts = [
         'fecha' => 'date',
+        'vence' => 'date',
     ];
 
     public function usuario(): BelongsTo

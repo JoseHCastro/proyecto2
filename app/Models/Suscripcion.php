@@ -17,6 +17,7 @@ class Suscripcion extends Model
         'fecha_inicio',
         'fecha_fin',
         'renovacion_automatica',
+        'cuotas',
     ];
 
     protected $casts = [
@@ -38,10 +39,5 @@ class Suscripcion extends Model
     public function pagos(): HasMany
     {
         return $this->hasMany(Pago::class);
-    }
-
-    public function congelaciones(): HasMany
-    {
-        return $this->hasMany(CongelacionMembresia::class);
     }
 }
