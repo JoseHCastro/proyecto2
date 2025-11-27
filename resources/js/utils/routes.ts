@@ -1,18 +1,48 @@
 import { usePage } from '@inertiajs/vue3';
 
 /**
- * Get the full URL for a Wayfinder route
- * Prepends the APP_URL to handle subdirectory deployments
+ * Extract the base path from APP_URL for subdirectory deployments
  */
-export function useRouteUrl(path: string): string {
+export function getBasePath(): string {
     const page = usePage();
     const appUrl = (page.props.app_url as string) || '';
+    
+    if (!appUrl) return '';
+    
+    try {
+        const url = new URL(appUrl);
+        // Return the pathname without trailing slash
+        return url.pathname.replace(/\/$/, '');
+    } catch {
+        // If it's not a valid URL, return empty
+        return '';
+    }
+}
 
-    // Remove trailing slash from appUrl and leading slash from path if both exist
-    const cleanAppUrl = appUrl.replace(/\/$/, '');
+/**
+ * Convert a relative path to full path with base prefix
+ * Use this for all internal links in subdirectory deployments
+ */
+export function toUrl(path: string): string {
+    const basePath = getBasePath();
     const cleanPath = path.startsWith('/') ? path : '/' + path;
+    
+    // If no base path, return the original path
+    if (!basePath) return cleanPath;
+    
+    // Avoid double prefixing
+    if (cleanPath.startsWith(basePath)) return cleanPath;
+    
+    return basePath + cleanPath;
+}
 
-    return cleanAppUrl + cleanPath;
+/**
+ * Get the full URL for a Wayfinder route
+ * Prepends the APP_URL to handle subdirectory deployments
+ * @deprecated Use toUrl() instead for simpler path handling
+ */
+export function useRouteUrl(path: string): string {
+    return toUrl(path);
 }
 
 /**
@@ -26,7 +56,7 @@ export function wrapRoute<T extends (...args: any[]) => any>(
         if (typeof result === 'object' && result.url) {
             return {
                 ...result,
-                url: useRouteUrl(result.url),
+                url: toUrl(result.url),
             };
         }
         return result;

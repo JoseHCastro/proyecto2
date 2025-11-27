@@ -9,6 +9,7 @@ import {
 import { urlIsActive } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
+import { toUrl } from '@/utils/routes';
 
 defineProps<{
     items: NavItem[];
@@ -24,10 +25,10 @@ const page = usePage();
             <SidebarMenuItem v-for="item in items" :key="item.title">
                 <SidebarMenuButton
                     as-child
-                    :is-active="urlIsActive(item.href, page.url)"
+                    :is-active="urlIsActive(toUrl(item.href), page.url)"
                     :tooltip="item.title"
                 >
-                    <Link :href="item.href">
+                    <Link :href="toUrl(item.href)">
                         <component :is="item.icon" />
                         <span>{{ item.title }}</span>
                     </Link>
