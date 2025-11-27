@@ -1,1 +1,0 @@
-import{A as n}from"./app-B76GnUuc.js";function s(t){const r=(n().props.app_url||"").replace(/\/$/,""),p=t.startsWith("/")?t:"/"+t;return r+p}function c(t){const o=((...e)=>{const r=t(...e);return typeof r=="object"&&r.url?{...r,url:s(r.url)}:r});return Object.keys(t).forEach(e=>{const r=t[e];typeof r=="function"?o[e]=c(r):o[e]=r}),o}export{c as w};
