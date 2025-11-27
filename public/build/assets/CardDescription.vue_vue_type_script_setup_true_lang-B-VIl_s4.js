@@ -1,1 +1,0 @@
-import{a as t}from"./AppFooter-DaHgPrIF.js";import{q as o,b as r,n,e as c,H as p,k as l}from"./app-CYSvmcR8.js";const f=o({__name:"CardDescription",props:{class:{}},setup(s){const e=s;return(a,m)=>(l(),r("p",{"data-slot":"card-description",class:n(c(t)("text-muted-foreground text-sm",e.class))},[p(a.$slots,"default")],2))}});export{f as _};
