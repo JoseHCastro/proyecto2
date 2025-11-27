@@ -18,15 +18,13 @@ withDefaults(defineProps<Props>(), {
 <template>
     <AppShell variant="sidebar">
         <AppSidebar />
-        <AppContent variant="sidebar" class="overflow-x-hidden flex flex-col min-h-screen">
+        <AppContent variant="sidebar" class="overflow-x-hidden">
             <AppSidebarHeader :breadcrumbs="breadcrumbs">
                 <template #header v-if="$slots.header">
                     <slot name="header" />
                 </template>
             </AppSidebarHeader>
-            <div class="flex-1">
-                <slot />
-            </div>
+            <slot />
             <AppFooter />
         </AppContent>
     </AppShell>

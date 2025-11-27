@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('estado'); // activa, vencida, cancelada
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
+            $table->integer('cuotas')->default(1); // Número de cuotas
             $table->boolean('renovacion_automatica')->default(false);
             $table->timestamps();
         });

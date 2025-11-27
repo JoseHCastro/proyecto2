@@ -12,7 +12,7 @@ const currentYear = new Date().getFullYear();
         <div
             class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
             <div class="mb-4 md:mb-0">
-                &copy; {{ currentYear }} Metaluv Camiri. Todos los derechos reservados.
+                &copy; {{ currentYear }} Todos los derechos reservados.
             </div>
 
             <div class="flex items-center space-x-4">

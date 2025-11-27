@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { dashboard, login, register } from '@/routes';
 import { Head, Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dumbbell, Users, Calendar, Clock, MapPin, Phone, Mail, CheckCircle } from 'lucide-vue-next';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
+import AppFooter from '@/components/AppFooter.vue';
 
 const props = withDefaults(
     defineProps<{
@@ -31,51 +33,58 @@ const formatPrice = (price: number) => {
 // Obtener disciplinas únicas de las sesiones de cada paquete
 const getDisciplinasPaquete = (paquete: any) => {
     if (!paquete.sesiones || paquete.sesiones.length === 0) return [];
-    
+
     const disciplinasMap = new Map();
     paquete.sesiones.forEach((sesion: any) => {
         if (sesion.disciplina) {
             disciplinasMap.set(sesion.disciplina.id, sesion.disciplina);
         }
     });
-    
+
     return Array.from(disciplinasMap.values());
+};
+
+const descripcionGimnasio = computed(() => {
+    return props.gimnasio?.descripcion || 'Entrena con los mejores profesionales, equipamiento de última generación y un ambiente motivador que te ayudará a alcanzar tus objetivos.';
+});
+
+const getDescripcionDisciplina = (disciplina: any) => {
+    return disciplina.descripcion || 'Entrena con profesionales';
 };
 </script>
 
 <template>
+
     <Head title="Elevation Gym - Tu gimnasio de confianza" />
-    
+
     <div class="min-h-screen bg-background">
         <!-- Navbar -->
-        <nav class="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <nav
+            class="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div class="container mx-auto flex h-16 items-center justify-between px-4">
                 <Link href="/" class="flex items-center gap-2">
-                    <Dumbbell class="h-8 w-8 text-primary" />
-                    <span class="text-2xl font-bold text-foreground">Elevation Gym</span>
+                <Dumbbell class="h-8 w-8 text-primary" />
+                <span class="text-2xl font-bold text-foreground">Elevation Gym</span>
                 </Link>
-                
+
                 <div class="flex items-center gap-4">
                     <ThemeSwitcher />
-                    
-                    <Link
-                        v-if="$page.props.auth.user"
-                        :href="dashboard()"
-                    >
-                        <Button variant="default">
-                            Dashboard
-                        </Button>
+
+                    <Link v-if="$page.props.auth.user" :href="dashboard()">
+                    <Button variant="default">
+                        Dashboard
+                    </Button>
                     </Link>
                     <template v-else>
                         <Link :href="login()">
-                            <Button variant="ghost">
-                                Iniciar Sesión
-                            </Button>
+                        <Button variant="ghost">
+                            Iniciar Sesión
+                        </Button>
                         </Link>
                         <Link v-if="canRegister" :href="register()">
-                            <Button variant="default">
-                                Registrarse
-                            </Button>
+                        <Button variant="default">
+                            Registrarse
+                        </Button>
                         </Link>
                     </template>
                 </div>
@@ -95,14 +104,14 @@ const getDisciplinasPaquete = (paquete: any) => {
                             Eleva tu <span class="text-primary">Potencial</span> al Máximo
                         </h1>
                         <p class="text-lg text-muted-foreground">
-                            {{ gimnasio?.descripcion || 'Entrena con los mejores profesionales, equipamiento de última generación y un ambiente motivador que te ayudará a alcanzar tus objetivos.' }}
+                            {{ descripcionGimnasio }}
                         </p>
                         <div class="flex flex-wrap gap-4">
                             <Link v-if="!$page.props.auth.user" :href="register()">
-                                <Button size="lg" class="gap-2">
-                                    <Users class="h-5 w-5" />
-                                    Únete Ahora
-                                </Button>
+                            <Button size="lg" class="gap-2">
+                                <Users class="h-5 w-5" />
+                                Únete Ahora
+                            </Button>
                             </Link>
                             <a href="#membresias">
                                 <Button size="lg" variant="outline">
@@ -111,7 +120,7 @@ const getDisciplinasPaquete = (paquete: any) => {
                             </a>
                         </div>
                     </div>
-                    
+
                     <div class="relative">
                         <div class="aspect-square overflow-hidden rounded-2xl">
                             <img src="/assets/image.png" alt="Elevation Gym" class="h-full w-full object-cover" />
@@ -128,9 +137,10 @@ const getDisciplinasPaquete = (paquete: any) => {
                     <h2 class="mb-4 text-3xl font-bold text-foreground">Nuestras Disciplinas</h2>
                     <p class="text-muted-foreground">Entrena en múltiples disciplinas con instructores certificados</p>
                 </div>
-                
+
                 <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    <Card v-for="disciplina in disciplinas" :key="disciplina.id" class="overflow-hidden transition-all hover:shadow-lg">
+                    <Card v-for="disciplina in disciplinas" :key="disciplina.id"
+                        class="overflow-hidden transition-all hover:shadow-lg">
                         <CardHeader class="bg-primary/5">
                             <CardTitle class="flex items-center gap-2">
                                 <Dumbbell class="h-5 w-5 text-primary" />
@@ -138,7 +148,7 @@ const getDisciplinasPaquete = (paquete: any) => {
                             </CardTitle>
                         </CardHeader>
                         <CardContent class="pt-4">
-                            <p class="text-sm text-muted-foreground">{{ disciplina.descripcion || 'Entrena con profesionales' }}</p>
+                            <p class="text-sm text-muted-foreground">{{ getDescripcionDisciplina(disciplina) }}</p>
                         </CardContent>
                     </Card>
                 </div>
@@ -158,76 +168,72 @@ const getDisciplinasPaquete = (paquete: any) => {
                         <template v-if="membresia.paquetes && membresia.paquetes.length > 0">
                             <div class="mb-6 text-center">
                                 <h3 class="text-2xl font-bold text-foreground">{{ membresia.nombre }}</h3>
-                                <p v-if="membresia.descripcion" class="text-muted-foreground">{{ membresia.descripcion }}</p>
+                                <p v-if="membresia.descripcion" class="text-muted-foreground">{{ membresia.descripcion
+                                }}</p>
                             </div>
 
                             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            <Card 
-                                v-for="paquete in membresia.paquetes" 
-                                :key="paquete.id"
-                                class="relative overflow-hidden transition-all hover:shadow-xl hover:scale-105"
-                            >
-                                <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary to-primary/50" />
-                                
-                                <CardHeader>
-                                    <CardTitle class="text-2xl">{{ paquete.nombre }}</CardTitle>
-                                    <CardDescription v-if="paquete.descripcion">
-                                        {{ paquete.descripcion }}
-                                    </CardDescription>
-                                </CardHeader>
+                                <Card v-for="paquete in membresia.paquetes" :key="paquete.id"
+                                    class="relative overflow-hidden transition-all hover:shadow-xl hover:scale-105">
+                                    <div
+                                        class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary to-primary/50" />
 
-                                <CardContent class="space-y-4">
-                                    <!-- Precio -->
-                                    <div class="text-center">
-                                        <div class="text-4xl font-bold text-primary">
-                                            {{ formatPrice(paquete.precio) }}
-                                        </div>
-                                        <p class="text-sm text-muted-foreground">por mes</p>
-                                    </div>
+                                    <CardHeader>
+                                        <CardTitle class="text-2xl">{{ paquete.nombre }}</CardTitle>
+                                        <CardDescription v-if="paquete.descripcion">
+                                            {{ paquete.descripcion }}
+                                        </CardDescription>
+                                    </CardHeader>
 
-                                    <!-- Duración -->
-                                    <div v-if="paquete.duracion_dias" class="flex items-center gap-2 text-sm">
-                                        <Clock class="h-4 w-4 text-primary" />
-                                        <span>{{ paquete.duracion_dias }} días de acceso</span>
-                                    </div>
+                                    <CardContent class="space-y-4">
+                                        <!-- Precio -->
+                                        <div class="text-center">
+                                            <div class="text-4xl font-bold text-primary">
+                                                {{ formatPrice(paquete.precio) }}
+                                            </div>
+                                            <p class="text-sm text-muted-foreground">por mes</p>
+                                        </div>
 
-                                    <!-- Disciplinas incluidas -->
-                                    <div v-if="getDisciplinasPaquete(paquete).length > 0">
-                                        <p class="mb-2 text-sm font-semibold">Disciplinas incluidas:</p>
-                                        <div class="flex flex-wrap gap-2">
-                                            <Badge 
-                                                v-for="disciplina in getDisciplinasPaquete(paquete)" 
-                                                :key="disciplina.id"
-                                                variant="secondary"
-                                            >
-                                                {{ disciplina.nombre }}
-                                            </Badge>
+                                        <!-- Duración -->
+                                        <div v-if="paquete.duracion_dias" class="flex items-center gap-2 text-sm">
+                                            <Clock class="h-4 w-4 text-primary" />
+                                            <span>{{ paquete.duracion_dias }} días de acceso</span>
                                         </div>
-                                    </div>
 
-                                    <!-- Beneficios -->
-                                    <div class="space-y-2 border-t pt-4">
-                                        <div class="flex items-start gap-2">
-                                            <CheckCircle class="mt-0.5 h-4 w-4 text-primary" />
-                                            <span class="text-sm">Acceso a todas las instalaciones</span>
+                                        <!-- Disciplinas incluidas -->
+                                        <div v-if="getDisciplinasPaquete(paquete).length > 0">
+                                            <p class="mb-2 text-sm font-semibold">Disciplinas incluidas:</p>
+                                            <div class="flex flex-wrap gap-2">
+                                                <Badge v-for="disciplina in getDisciplinasPaquete(paquete)"
+                                                    :key="disciplina.id" variant="secondary">
+                                                    {{ disciplina.nombre }}
+                                                </Badge>
+                                            </div>
                                         </div>
-                                        <div class="flex items-start gap-2">
-                                            <CheckCircle class="mt-0.5 h-4 w-4 text-primary" />
-                                            <span class="text-sm">Instructores certificados</span>
-                                        </div>
-                                        <div class="flex items-start gap-2">
-                                            <CheckCircle class="mt-0.5 h-4 w-4 text-primary" />
-                                            <span class="text-sm">Evaluación física inicial</span>
-                                        </div>
-                                    </div>
 
-                                    <Link v-if="!$page.props.auth.user" :href="register()">
+                                        <!-- Beneficios -->
+                                        <div class="space-y-2 border-t pt-4">
+                                            <div class="flex items-start gap-2">
+                                                <CheckCircle class="mt-0.5 h-4 w-4 text-primary" />
+                                                <span class="text-sm">Acceso a todas las instalaciones</span>
+                                            </div>
+                                            <div class="flex items-start gap-2">
+                                                <CheckCircle class="mt-0.5 h-4 w-4 text-primary" />
+                                                <span class="text-sm">Instructores certificados</span>
+                                            </div>
+                                            <div class="flex items-start gap-2">
+                                                <CheckCircle class="mt-0.5 h-4 w-4 text-primary" />
+                                                <span class="text-sm">Evaluación física inicial</span>
+                                            </div>
+                                        </div>
+
+                                        <Link v-if="!$page.props.auth.user" :href="register()">
                                         <Button class="w-full">
                                             Elegir Plan
                                         </Button>
-                                    </Link>
-                                </CardContent>
-                            </Card>
+                                        </Link>
+                                    </CardContent>
+                                </Card>
                             </div>
                         </template>
                     </div>
@@ -340,18 +346,6 @@ const getDisciplinasPaquete = (paquete: any) => {
         </section>
 
         <!-- Footer -->
-        <footer class="border-t py-8">
-            <div class="container mx-auto px-4">
-                <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
-                    <div class="flex items-center gap-2">
-                        <Dumbbell class="h-6 w-6 text-primary" />
-                        <span class="text-lg font-bold">Elevation Gym</span>
-                    </div>
-                    <p class="text-sm text-muted-foreground">
-                        © {{ new Date().getFullYear() }} Elevation Gym. Todos los derechos reservados.
-                    </p>
-                </div>
-            </div>
-        </footer>
+        <AppFooter />
     </div>
 </template>
