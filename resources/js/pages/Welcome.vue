@@ -123,7 +123,7 @@ const getDescripcionDisciplina = (disciplina: any) => {
 
                     <div class="relative">
                         <div class="aspect-square overflow-hidden rounded-2xl">
-                            <img src="/assets/image.png" alt="Elevation Gym" class="h-full w-full object-cover" />
+                            <img src="assets/image.png" alt="Elevation Gym" class="h-full w-full object-cover" />
                         </div>
                     </div>
                 </div>
@@ -169,7 +169,7 @@ const getDescripcionDisciplina = (disciplina: any) => {
                             <div class="mb-6 text-center">
                                 <h3 class="text-2xl font-bold text-foreground">{{ membresia.nombre }}</h3>
                                 <p v-if="membresia.descripcion" class="text-muted-foreground">{{ membresia.descripcion
-                                }}</p>
+                                    }}</p>
                             </div>
 
                             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
