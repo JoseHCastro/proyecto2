@@ -48,7 +48,7 @@ class SuscripcionController extends Controller
         ], [
             'cuotas.max' => "El número de cuotas no puede ser mayor a {$maxCuotas} (duración en días / 2)",
         ]);
-        
+
         // Calcular fechas
         $fechaInicio = Carbon::today();
         $fechaFin = $fechaInicio->copy()->addDays($paquete->membresia->duracion_dias);
@@ -75,7 +75,7 @@ class SuscripcionController extends Controller
     {
         // Calcular monto por cuota
         $montoPorCuota = $paquete->precio / $cuotas;
-        
+
         // Calcular días entre pagos
         $diasEntrePagos = floor($paquete->membresia->duracion_dias / $cuotas);
 
@@ -103,9 +103,13 @@ class SuscripcionController extends Controller
 
     public function show(Suscripcion $suscripcione)
     {
-        $suscripcione->load(['usuario', 'paquete.membresia', 'pagos' => function ($query) {
-            $query->orderBy('vence', 'asc');
-        }]);
+        $suscripcione->load([
+            'usuario',
+            'paquete.membresia',
+            'pagos' => function ($query) {
+                $query->orderBy('vence', 'asc');
+            }
+        ]);
 
         return Inertia::render('Suscripciones/Show', [
             'suscripcion' => $suscripcione,
@@ -167,6 +171,10 @@ class SuscripcionController extends Controller
         $validated = $request->validate([
             'metodo' => 'required|in:efectivo,QR,tarjeta',
         ]);
+
+        if ($validated['metodo'] === 'QR') {
+            return redirect()->route('pagofacil.generar-cuota', ['pago' => $pago->id]);
+        }
 
         $pago->update([
             'metodo' => $validated['metodo'],

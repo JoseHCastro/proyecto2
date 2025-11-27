@@ -31,11 +31,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('informacion', [\App\Http\Controllers\InformacionController::class, 'index'])->name('informacion.index');
     Route::get('informacion/edit', [\App\Http\Controllers\InformacionController::class, 'edit'])->name('informacion.edit');
     Route::put('informacion', [\App\Http\Controllers\InformacionController::class, 'update'])->name('informacion.update');
-    
+
     // Rutas de QR y Asistencia
     Route::get('mi-qr', [\App\Http\Controllers\QrController::class, 'miQr'])->name('qr.mi-qr');
     Route::get('asistencias/registrar', [\App\Http\Controllers\AsistenciaController::class, 'index'])->name('asistencias.registrar');
     Route::post('asistencias/registrar', [\App\Http\Controllers\AsistenciaController::class, 'registrar'])->name('asistencias.store');
+
+    // Rutas de PagoFácil (Protegidas)
+    Route::get('pagos/qr', [\App\Http\Controllers\PagoFacilController::class, 'index'])->name('pagofacil.index');
+    Route::post('pagos/generar-qr', [\App\Http\Controllers\PagoFacilController::class, 'generarQr'])->name('pagofacil.generar');
+    Route::get('pagos/generar-cuota/{pago}', [\App\Http\Controllers\PagoFacilController::class, 'generarQrCuota'])->name('pagofacil.generar-cuota');
+    Route::get('pagos/consultar/{id}', [\App\Http\Controllers\PagoFacilController::class, 'consultarEstado'])->name('pagofacil.consultar');
 });
+
+// Ruta Callback PagoFácil (Pública y sin CSRF - configurar en bootstrap/app.php)
+Route::post('payment/callback', [\App\Http\Controllers\PagoFacilController::class, 'callback'])->name('pagofacil.callback');
 
 require __DIR__ . '/settings.php';

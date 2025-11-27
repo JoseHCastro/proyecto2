@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'pagofacil' => [
+        'url' => env('PAGOFACIL_URL', 'https://serviciostigomoney.pagofacil.com.bo/api/servicio'),
+        'service_token' => env('PAGOFACIL_SERVICE_TOKEN'),
+        'secret_token' => env('PAGOFACIL_SECRET_TOKEN'),
+    ],
+
 ];
