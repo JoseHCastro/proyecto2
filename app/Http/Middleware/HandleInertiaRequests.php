@@ -45,7 +45,18 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'page_views' => function () use ($request) {
+                // Obtener contador para la URL actual
+                // Nota: Usamos path() igual que en el middleware CountPageViews
+                $url = $request->path();
+                $urlToStore = $url === '/' ? '/' : '/' . $url;
+
+                // Evitar consultas innecesarias en rutas ignoradas si es posible, 
+                // pero por simplicidad consultamos si existe.
+                $vista = \App\Models\Vista::where('url', $urlToStore)->first();
+                return $vista ? $vista->count : 0;
+            },
         ];
     }
 }
