@@ -93,8 +93,18 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user->load('roles');
+        
+        // Si el usuario es Cliente, cargar sus mediciones de progreso
+        $mediciones = [];
+        if ($user->hasRole('Cliente')) {
+            $mediciones = \App\Models\MedicionProgreso::where('socio_id', $user->id)
+                ->orderBy('medido_en', 'desc')
+                ->get();
+        }
+        
         return Inertia::render('Users/Show', [
             'user' => $user,
+            'mediciones' => $mediciones,
         ]);
     }
 

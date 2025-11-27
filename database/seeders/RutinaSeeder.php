@@ -22,56 +22,42 @@ class RutinaSeeder extends Seeder
             return;
         }
 
-        $cliente = $clientes->first();
-        $instructor = $instructores->first();
-
-        $rutinas = [
-            [
-                'socio_id' => $cliente->id,
-                'instructor_id' => $instructor->id,
-                'ejercicio' => 'Press de banca',
-                'series' => 4,
-                'repeticiones' => 12,
-                'creada_en' => now()->subDays(7),
-            ],
-            [
-                'socio_id' => $cliente->id,
-                'instructor_id' => $instructor->id,
-                'ejercicio' => 'Sentadillas',
-                'series' => 4,
-                'repeticiones' => 15,
-                'creada_en' => now()->subDays(7),
-            ],
-            [
-                'socio_id' => $cliente->id,
-                'instructor_id' => $instructor->id,
-                'ejercicio' => 'Peso muerto',
-                'series' => 3,
-                'repeticiones' => 10,
-                'creada_en' => now()->subDays(5),
-            ],
-            [
-                'socio_id' => $cliente->id,
-                'instructor_id' => $instructor->id,
-                'ejercicio' => 'Dominadas',
-                'series' => 3,
-                'repeticiones' => 8,
-                'creada_en' => now()->subDays(3),
-            ],
-            [
-                'socio_id' => $cliente->id,
-                'instructor_id' => $instructor->id,
-                'ejercicio' => 'Curl de bíceps',
-                'series' => 3,
-                'repeticiones' => 12,
-                'creada_en' => now()->subDays(1),
-            ],
+        $ejercicios = [
+            ['ejercicio' => 'Press de banca', 'series' => 4, 'repeticiones' => 12],
+            ['ejercicio' => 'Sentadillas', 'series' => 4, 'repeticiones' => 15],
+            ['ejercicio' => 'Peso muerto', 'series' => 3, 'repeticiones' => 10],
+            ['ejercicio' => 'Dominadas', 'series' => 3, 'repeticiones' => 8],
+            ['ejercicio' => 'Curl de bíceps', 'series' => 3, 'repeticiones' => 12],
+            ['ejercicio' => 'Press militar', 'series' => 3, 'repeticiones' => 10],
+            ['ejercicio' => 'Remo con barra', 'series' => 4, 'repeticiones' => 12],
         ];
 
-        foreach ($rutinas as $rutina) {
-            Rutina::create($rutina);
+        $totalRutinas = 0;
+
+        // Crear rutinas para cada cliente
+        foreach ($clientes as $index => $cliente) {
+            // Asignar un instructor (rotar entre los disponibles)
+            $instructor = $instructores[$index % $instructores->count()];
+
+            // Crear 3-5 rutinas aleatorias por cliente
+            $numRutinas = rand(3, 5);
+            
+            for ($i = 0; $i < $numRutinas; $i++) {
+                $ejercicio = $ejercicios[array_rand($ejercicios)];
+                
+                Rutina::create([
+                    'socio_id' => $cliente->id,
+                    'instructor_id' => $instructor->id,
+                    'ejercicio' => $ejercicio['ejercicio'],
+                    'series' => $ejercicio['series'],
+                    'repeticiones' => $ejercicio['repeticiones'],
+                    'creada_en' => now()->subDays(rand(1, 30)),
+                ]);
+                
+                $totalRutinas++;
+            }
         }
 
-        $this->command->info('Rutinas creadas correctamente.');
+        $this->command->info("Rutinas creadas correctamente: {$totalRutinas} rutinas para {$clientes->count()} clientes.");
     }
 }

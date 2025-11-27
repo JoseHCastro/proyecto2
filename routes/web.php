@@ -22,6 +22,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('sesiones', \App\Http\Controllers\SesionController::class);
     Route::resource('paquetes', \App\Http\Controllers\PaqueteController::class);
     Route::resource('rutinas', \App\Http\Controllers\RutinaController::class);
+    Route::post('mediciones-progreso', [\App\Http\Controllers\MedicionProgresoController::class, 'store']);
+    Route::delete('mediciones-progreso/{id}', [\App\Http\Controllers\MedicionProgresoController::class, 'destroy']);
+    Route::get('informacion', [\App\Http\Controllers\InformacionController::class, 'index'])->name('informacion.index');
+    Route::get('informacion/edit', [\App\Http\Controllers\InformacionController::class, 'edit'])->name('informacion.edit');
+    Route::put('informacion', [\App\Http\Controllers\InformacionController::class, 'update'])->name('informacion.update');
 });
 
 require __DIR__ . '/settings.php';

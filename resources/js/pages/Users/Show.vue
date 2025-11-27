@@ -1,14 +1,76 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm, router } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Pencil, ArrowLeft } from 'lucide-vue-next';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Pencil, ArrowLeft, Plus, Trash2, Scale, Ruler } from 'lucide-vue-next';
+import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
 
 const props = defineProps({
     user: Object,
+    mediciones: Array,
 });
+
+const isDialogOpen = ref(false);
+
+const form = useForm({
+    socio_id: props.user.id,
+    peso_kg: '',
+    estatura_cm: '',
+    grasa_corporal: '',
+    notas: '',
+});
+
+const submitMedicion = () => {
+    form.post('/mediciones-progreso', {
+        onSuccess: () => {
+            successAlert({
+                title: '¡Registrado!',
+                text: 'La medición de progreso ha sido registrada correctamente',
+            });
+            form.reset();
+            isDialogOpen.value = false;
+        },
+        onError: () => {
+            errorAlert({
+                title: 'Error',
+                text: 'Hubo un problema al registrar la medición',
+            });
+        },
+    });
+};
+
+const deleteMedicion = async (id) => {
+    const result = await confirmAlert({
+        title: '¿Eliminar medición?',
+        text: 'Esta acción no se puede deshacer',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+    });
+
+    if (result.isConfirmed) {
+        router.delete(`/mediciones-progreso/${id}`, {
+            onSuccess: () => {
+                successAlert({
+                    title: '¡Eliminado!',
+                    text: 'La medición ha sido eliminada correctamente',
+                });
+            },
+        });
+    }
+};
+
+const calcularIMC = (peso, estatura) => {
+    const estaturaMetros = estatura / 100;
+    return (peso / (estaturaMetros * estaturaMetros)).toFixed(2);
+};
 </script>
 
 <template>
@@ -97,6 +159,157 @@ const props = defineProps({
                             <div class="space-y-2">
                                 <label class="text-sm font-medium text-muted-foreground">Biografía</label>
                                 <p class="text-base whitespace-pre-wrap">{{ user.biografia || 'No especificado' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Sección de Progreso (solo para Cliente) -->
+                        <div v-if="user.roles.some(r => r.name === 'Cliente')" class="border-t pt-6 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-medium">Progreso</h3>
+                                <Dialog v-model:open="isDialogOpen">
+                                    <DialogTrigger as-child>
+                                        <Button>
+                                            <Plus class="mr-2 h-4 w-4" />
+                                            Añadir Medición
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent class="sm:max-w-[500px]">
+                                        <DialogHeader>
+                                            <DialogTitle>Nueva Medición de Progreso</DialogTitle>
+                                            <DialogDescription>
+                                                Registra las mediciones del socio
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <form @submit.prevent="submitMedicion" class="space-y-4">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <div class="space-y-2">
+                                                    <Label for="peso_kg">Peso (kg) *</Label>
+                                                    <Input 
+                                                        id="peso_kg" 
+                                                        v-model="form.peso_kg" 
+                                                        type="number" 
+                                                        step="0.1"
+                                                        required 
+                                                    />
+                                                    <span v-if="form.errors.peso_kg" class="text-sm text-destructive">
+                                                        {{ form.errors.peso_kg }}
+                                                    </span>
+                                                </div>
+
+                                                <div class="space-y-2">
+                                                    <Label for="estatura_cm">Estatura (cm) *</Label>
+                                                    <Input 
+                                                        id="estatura_cm" 
+                                                        v-model="form.estatura_cm" 
+                                                        type="number" 
+                                                        step="0.1"
+                                                        required 
+                                                    />
+                                                    <span v-if="form.errors.estatura_cm" class="text-sm text-destructive">
+                                                        {{ form.errors.estatura_cm }}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="space-y-2">
+                                                <Label for="grasa_corporal">% Grasa Corporal</Label>
+                                                <Input 
+                                                    id="grasa_corporal" 
+                                                    v-model="form.grasa_corporal" 
+                                                    type="number" 
+                                                    step="0.1"
+                                                    min="0"
+                                                    max="100"
+                                                />
+                                                <span v-if="form.errors.grasa_corporal" class="text-sm text-destructive">
+                                                    {{ form.errors.grasa_corporal }}
+                                                </span>
+                                            </div>
+
+                                            <div class="space-y-2">
+                                                <Label for="notas">Notas</Label>
+                                                <Textarea 
+                                                    id="notas" 
+                                                    v-model="form.notas" 
+                                                    placeholder="Observaciones adicionales..."
+                                                    rows="3"
+                                                />
+                                                <span v-if="form.errors.notas" class="text-sm text-destructive">
+                                                    {{ form.errors.notas }}
+                                                </span>
+                                            </div>
+
+                                            <div class="flex justify-end gap-3">
+                                                <Button type="button" variant="outline" @click="isDialogOpen = false">
+                                                    Cancelar
+                                                </Button>
+                                                <Button type="submit" :disabled="form.processing">
+                                                    {{ form.processing ? 'Guardando...' : 'Guardar' }}
+                                                </Button>
+                                            </div>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
+
+                            <!-- Lista de mediciones -->
+                            <div v-if="mediciones && mediciones.length > 0" class="rounded-md border">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Fecha</TableHead>
+                                            <TableHead>Peso</TableHead>
+                                            <TableHead>Estatura</TableHead>
+                                            <TableHead>IMC</TableHead>
+                                            <TableHead>Grasa</TableHead>
+                                            <TableHead>Notas</TableHead>
+                                            <TableHead class="text-right">Acciones</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        <TableRow v-for="medicion in mediciones" :key="medicion.id">
+                                            <TableCell class="font-medium">
+                                                {{ new Date(medicion.medido_en).toLocaleDateString('es-ES') }}
+                                            </TableCell>
+                                            <TableCell>
+                                                <div class="flex items-center gap-1">
+                                                    <Scale class="h-4 w-4 text-muted-foreground" />
+                                                    {{ medicion.peso_kg }} kg
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div class="flex items-center gap-1">
+                                                    <Ruler class="h-4 w-4 text-muted-foreground" />
+                                                    {{ medicion.estatura_cm }} cm
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant="outline">
+                                                    {{ calcularIMC(medicion.peso_kg, medicion.estatura_cm) }}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                {{ medicion.grasa_corporal ? medicion.grasa_corporal + '%' : '-' }}
+                                            </TableCell>
+                                            <TableCell class="max-w-xs truncate">
+                                                {{ medicion.notas || '-' }}
+                                            </TableCell>
+                                            <TableCell class="text-right">
+                                                <Button 
+                                                    variant="ghost" 
+                                                    size="sm"
+                                                    @click="deleteMedicion(medicion.id)"
+                                                >
+                                                    <Trash2 class="h-4 w-4 text-destructive" />
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </div>
+
+                            <div v-else class="text-center py-8 text-muted-foreground">
+                                <p>No hay mediciones de progreso registradas</p>
                             </div>
                         </div>
                     </CardContent>

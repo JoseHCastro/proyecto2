@@ -15,7 +15,6 @@ return new class extends Migration {
             $table->float('estatura_cm');
             $table->float('grasa_corporal')->nullable();
             $table->text('notas')->nullable();
-            $table->timestamps();
         });
     }
 
