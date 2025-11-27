@@ -9,12 +9,9 @@ return new class extends Migration {
     {
         Schema::create('horarios', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('disciplina_id')->constrained('disciplinas')->onDelete('cascade');
-            $table->foreignId('instructor_id')->constrained('users')->onDelete('cascade');
-            $table->integer('dia_semana'); // 0=Domingo, 1=Lunes, etc.
+            $table->json('dia_semana'); // Array de días: [1,2,3,4,5,6] (Lunes a Sábado)
             $table->time('hora_inicio');
             $table->time('hora_fin');
-            $table->integer('capacidad');
             $table->timestamps();
         });
     }

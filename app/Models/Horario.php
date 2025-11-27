@@ -3,28 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Horario extends Model
 {
     protected $table = 'horarios';
 
     protected $fillable = [
-        'disciplina_id',
-        'instructor_id',
         'dia_semana',
         'hora_inicio',
         'hora_fin',
-        'capacidad',
     ];
 
-    public function disciplina(): BelongsTo
-    {
-        return $this->belongsTo(Disciplina::class);
-    }
+    protected $casts = [
+        'dia_semana' => 'array',
+    ];
 
-    public function instructor(): BelongsTo
+    public function sesiones(): HasMany
     {
-        return $this->belongsTo(User::class, 'instructor_id');
+        return $this->hasMany(Sesion::class);
     }
 }

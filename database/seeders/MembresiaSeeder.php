@@ -15,31 +15,31 @@ class MembresiaSeeder extends Seeder
         $membresias = [
             [
                 'nombre' => 'Membresía Mensual',
-                'descripcion' => 'Acceso completo al gimnasio durante 30 días. Incluye acceso a todas las máquinas y áreas de entrenamiento.',
+                'descripcion' => 'Acceso completo al gimnasio durante 30 días.',
                 'duracion_dias' => 30,
                 'activo' => true,
             ],
             [
                 'nombre' => 'Membresía Trimestral',
-                'descripcion' => 'Acceso completo al gimnasio durante 90 días. Incluye acceso a todas las máquinas, áreas de entrenamiento y una sesión de evaluación física.',
+                'descripcion' => 'Acceso completo al gimnasio durante 90 días.',
                 'duracion_dias' => 90,
                 'activo' => true,
             ],
             [
                 'nombre' => 'Membresía Semestral',
-                'descripcion' => 'Acceso completo al gimnasio durante 180 días. Incluye acceso a todas las máquinas, áreas de entrenamiento, evaluación física mensual y plan de entrenamiento personalizado.',
+                'descripcion' => 'Acceso completo al gimnasio durante 180 días.',
                 'duracion_dias' => 180,
                 'activo' => true,
             ],
             [
                 'nombre' => 'Membresía Anual',
-                'descripcion' => 'Acceso completo al gimnasio durante 365 días. Incluye acceso a todas las máquinas, áreas de entrenamiento, evaluación física mensual, plan de entrenamiento personalizado y descuentos en clases especiales.',
+                'descripcion' => 'Acceso completo al gimnasio durante 365 días.',
                 'duracion_dias' => 365,
                 'activo' => true,
             ],
             [
                 'nombre' => 'Membresía Semanal',
-                'descripcion' => 'Acceso completo al gimnasio durante 7 días. Ideal para visitantes o quienes desean probar nuestras instalaciones.',
+                'descripcion' => 'Acceso completo al gimnasio durante 7 días.',
                 'duracion_dias' => 7,
                 'activo' => true,
             ],

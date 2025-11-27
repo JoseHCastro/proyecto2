@@ -19,14 +19,18 @@ class Paquete extends Model
         'membresia_id',
     ];
 
+    protected $casts = [
+        'activo' => 'boolean',
+    ];
+
     public function membresia(): BelongsTo
     {
         return $this->belongsTo(Membresia::class);
     }
 
-    public function disciplinas(): BelongsToMany
+    public function sesiones(): BelongsToMany
     {
-        return $this->belongsToMany(Disciplina::class, 'paquete_disciplina');
+        return $this->belongsToMany(Sesion::class, 'clase_paquete');
     }
 
     public function suscripciones(): HasMany

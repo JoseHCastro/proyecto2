@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Disciplina extends Model
 {
@@ -15,13 +14,8 @@ class Disciplina extends Model
         'descripcion',
     ];
 
-    public function horarios(): HasMany
+    public function sesiones(): HasMany
     {
-        return $this->hasMany(Horario::class);
-    }
-
-    public function paquetes(): BelongsToMany
-    {
-        return $this->belongsToMany(Paquete::class, 'paquete_disciplina');
+        return $this->hasMany(Sesion::class);
     }
 }
