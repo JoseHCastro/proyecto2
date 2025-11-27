@@ -21,7 +21,7 @@ export function useRouteUrl(path: string): string {
 export function wrapRoute<T extends (...args: any[]) => any>(
     routeFn: T
 ): T {
-    return ((...args: any[]) => {
+    const wrapped = ((...args: any[]) => {
         const result = routeFn(...args);
         if (typeof result === 'object' && result.url) {
             return {
@@ -31,4 +31,16 @@ export function wrapRoute<T extends (...args: any[]) => any>(
         }
         return result;
     }) as T;
+
+    // Copy all properties from the original function to the wrapped one
+    Object.keys(routeFn).forEach(key => {
+        const value = (routeFn as any)[key];
+        if (typeof value === 'function') {
+            (wrapped as any)[key] = wrapRoute(value);
+        } else {
+            (wrapped as any)[key] = value;
+        }
+    });
+
+    return wrapped;
 }
