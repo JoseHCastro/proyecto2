@@ -37,6 +37,11 @@ const mainNavItems: NavItem[] = [
         href: '/horarios',
         icon: Folder,
     },
+    {
+        title: 'Disciplinas',
+        href: '/disciplinas',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
