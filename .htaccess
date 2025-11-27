@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /inf513/grupo23sc/proyecto2/
+    
+    # Redirigir todas las peticiones a la carpeta public
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

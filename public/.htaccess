@@ -4,6 +4,9 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # Configurar base para subdirectorio
+    RewriteBase /inf513/grupo23sc/proyecto2/public/
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
