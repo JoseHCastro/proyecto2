@@ -60,16 +60,16 @@ class CreateNewUser implements CreatesNewUsers
     private function generarQr(User $user): void
     {
         try {
-            // Generar QR con el email del cliente como PNG
+            // Generar QR con el email del cliente como SVG (más compatible)
             $renderer = new ImageRenderer(
                 new RendererStyle(400),
-                new ImagickImageBackEnd()
+                new \BaconQrCode\Renderer\Image\SvgImageBackEnd()
             );
             $writer = new Writer($renderer);
             $qrCode = $writer->writeString($user->email);
 
             // Guardar en storage/app/public/qr
-            $filename = 'qr_' . md5($user->email) . '.png';
+            $filename = 'qr_' . md5($user->email) . '.svg';
             Storage::disk('public')->put('qr/' . $filename, $qrCode);
 
             // Actualizar usuario con la URL del QR

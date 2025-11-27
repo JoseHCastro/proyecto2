@@ -11,10 +11,10 @@ const props = defineProps({
 
 const descargarQR = () => {
     if (!props.usuario.url_qr) return;
-    
+
     const link = document.createElement('a');
     link.href = `/storage/${props.usuario.url_qr}`;
-    link.download = `qr_${props.usuario.name.replace(/\s+/g, '_')}.png`;
+    link.download = `qr_${props.usuario.name.replace(/\s+/g, '_')}.svg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -22,6 +22,7 @@ const descargarQR = () => {
 </script>
 
 <template>
+
     <Head title="Mi Código QR" />
 
     <AppLayout>
@@ -45,11 +46,7 @@ const descargarQR = () => {
                     </CardHeader>
                     <CardContent class="flex flex-col items-center gap-6">
                         <div v-if="usuario.url_qr" class="rounded-lg border-4 border-primary p-4 bg-white">
-                            <img 
-                                :src="`/storage/${usuario.url_qr}`" 
-                                :alt="`QR de ${usuario.name}`"
-                                class="h-64 w-64"
-                            />
+                            <img :src="`/storage/${usuario.url_qr}`" :alt="`QR de ${usuario.name}`" class="h-64 w-64" />
                         </div>
                         <div v-else class="text-center text-muted-foreground">
                             <p>No tienes un código QR generado.</p>
@@ -68,7 +65,7 @@ const descargarQR = () => {
                                 <li>2. El código será escaneado automáticamente</li>
                                 <li>3. Recibirás confirmación de tu asistencia</li>
                             </ol>
-                        </div>                        
+                        </div>
                     </CardContent>
                 </Card>
             </div>
