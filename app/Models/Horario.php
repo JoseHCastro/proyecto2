@@ -19,6 +19,18 @@ class Horario extends Model
         'dia_semana' => 'array',
     ];
 
+    protected $appends = ['hora_inicio_formatted', 'hora_fin_formatted'];
+
+    public function getHoraInicioFormattedAttribute()
+    {
+        return $this->hora_inicio ? substr($this->hora_inicio, 0, 5) : null;
+    }
+
+    public function getHoraFinFormattedAttribute()
+    {
+        return $this->hora_fin ? substr($this->hora_fin, 0, 5) : null;
+    }
+
     public function sesiones(): HasMany
     {
         return $this->hasMany(Sesion::class);

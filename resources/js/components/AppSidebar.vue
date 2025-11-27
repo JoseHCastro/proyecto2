@@ -32,6 +32,11 @@ const mainNavItems: NavItem[] = [
         href: '/membresias',
         icon: Folder,
     },
+    {
+        title: 'Horarios',
+        href: '/horarios',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
