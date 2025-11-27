@@ -7,10 +7,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthBase from '@/layouts/AuthLayout.vue';
-import { register } from '@/routes';
-import { store } from '@/routes/login';
-import { request } from '@/routes/password';
+import { register as _register } from '@/routes';
+import { store as _store } from '@/routes/login';
+import { request as _request } from '@/routes/password';
+import { wrapRoute } from '@/utils/routes';
 import { Form, Head } from '@inertiajs/vue3';
+
+// Wrap routes to use full URLs
+const register = wrapRoute(_register);
+const store = wrapRoute(_store);
+const request = wrapRoute(_request);
 
 defineProps<{
     status?: string;
@@ -20,62 +26,33 @@ defineProps<{
 </script>
 
 <template>
-    <AuthBase
-        title="Iniciar sesión"
-        description="Ingresa tu correo y contraseña para acceder"
-    >
+    <AuthBase title="Iniciar sesión" description="Ingresa tu correo y contraseña para acceder">
+
         <Head title="Iniciar sesión" />
 
-        <div
-            v-if="status"
-            class="mb-4 text-center text-sm font-medium text-green-600"
-        >
+        <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
             {{ status }}
         </div>
 
-        <Form
-            v-bind="store.form()"
-            :reset-on-success="['password']"
-            v-slot="{ errors, processing }"
-            class="flex flex-col gap-6"
-        >
+        <Form v-bind="store.form()" :reset-on-success="['password']" v-slot="{ errors, processing }"
+            class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
                     <Label for="email">Correo Electrónico</Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        name="email"
-                        required
-                        autofocus
-                        :tabindex="1"
-                        autocomplete="email"
-                        placeholder="correo@ejemplo.com"
-                    />
+                    <Input id="email" type="email" name="email" required autofocus :tabindex="1" autocomplete="email"
+                        placeholder="correo@ejemplo.com" />
                     <InputError :message="errors.email" />
                 </div>
 
                 <div class="grid gap-2">
                     <div class="flex items-center justify-between">
                         <Label for="password">Contraseña</Label>
-                        <TextLink
-                            v-if="canResetPassword"
-                            :href="request()"
-                            class="text-sm"
-                            :tabindex="5"
-                        >
+                        <TextLink v-if="canResetPassword" :href="request()" class="text-sm" :tabindex="5">
                             ¿Olvidaste tu contraseña?
                         </TextLink>
                     </div>
-                    <Input
-                        id="password"
-                        type="password"
-                        name="password"
-                        required
-                        :tabindex="2"
-                        autocomplete="current-password"
-                        placeholder="Contraseña"
-                    />
+                    <Input id="password" type="password" name="password" required :tabindex="2"
+                        autocomplete="current-password" placeholder="Contraseña" />
                     <InputError :message="errors.password" />
                 </div>
 
@@ -86,22 +63,13 @@ defineProps<{
                     </Label>
                 </div>
 
-                <Button
-                    type="submit"
-                    class="mt-4 w-full"
-                    :tabindex="4"
-                    :disabled="processing"
-                    data-test="login-button"
-                >
+                <Button type="submit" class="mt-4 w-full" :tabindex="4" :disabled="processing" data-test="login-button">
                     <Spinner v-if="processing" />
                     Iniciar sesión
                 </Button>
             </div>
 
-            <div
-                class="text-center text-sm text-muted-foreground"
-                v-if="canRegister"
-            >
+            <div class="text-center text-sm text-muted-foreground" v-if="canRegister">
                 ¿No tienes una cuenta?
                 <TextLink :href="register()" :tabindex="5">Regístrate</TextLink>
             </div>
