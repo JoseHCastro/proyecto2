@@ -131,6 +131,9 @@ class PagoFacilService
                 return $response->json('values');
             }
 
+            Log::error('PagoFácil Consultar Error. Status: ' . $response->status());
+            Log::error('PagoFácil Consultar Body: ' . $response->body());
+
             return null;
         } catch (\Exception $e) {
             Log::error('PagoFácil Consultar Exception: ' . $e->getMessage());

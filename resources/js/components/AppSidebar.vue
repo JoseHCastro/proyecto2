@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import {
@@ -13,7 +12,20 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, QrCode } from 'lucide-vue-next';
+import { 
+    LayoutGrid, 
+    Info, 
+    Users, 
+    CreditCard, 
+    Clock, 
+    Dumbbell,
+    CalendarDays,
+    Package,
+    ClipboardList,
+    FileCheck,
+    QrCode,
+    ScanLine
+} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -25,47 +37,47 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Información',
         href: '/informacion',
-        icon: Folder,
+        icon: Info,
     },
     {
         title: 'Usuarios',
         href: '/users',
-        icon: Folder,
+        icon: Users,
     },
     {
         title: 'Membresías',
         href: '/membresias',
-        icon: Folder,
+        icon: CreditCard,
     },
     {
         title: 'Horarios',
         href: '/horarios',
-        icon: Folder,
+        icon: Clock,
     },
     {
         title: 'Disciplinas',
         href: '/disciplinas',
-        icon: Folder,
+        icon: Dumbbell,
     },
     {
         title: 'Sesiones',
         href: '/sesiones',
-        icon: Folder,
+        icon: CalendarDays,
     },
     {
         title: 'Paquetes',
         href: '/paquetes',
-        icon: Folder,
+        icon: Package,
     },
     {
         title: 'Rutinas',
         href: '/rutinas',
-        icon: Folder,
+        icon: ClipboardList,
     },
     {
         title: 'Suscripciones',
         href: '/suscripciones',
-        icon: Folder,
+        icon: FileCheck,
     },
     {
         title: 'Pagos QR',
@@ -75,25 +87,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Mi QR',
         href: '/mi-qr',
-        icon: Folder,
+        icon: QrCode,
     },
     {
         title: 'Registrar Asistencia',
         href: '/asistencias/registrar',
-        icon: Folder,
-    },
-];
-
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
+        icon: ScanLine,
     },
 ];
 </script>
@@ -117,7 +116,6 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>
     </Sidebar>

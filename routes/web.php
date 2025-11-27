@@ -5,8 +5,19 @@ use Inertia\Inertia;
 use Laravel\Fortify\Features;
 
 Route::get('/', function () {
+    $membresias = \App\Models\Membresia::with(['paquetes' => function ($query) {
+        $query->with(['sesiones.disciplina', 'membresia']);
+    }])->get();
+    
+    $disciplinas = \App\Models\Disciplina::all();
+    
+    $gimnasio = \App\Models\Informacion::first();
+    
     return Inertia::render('Welcome', [
         'canRegister' => Features::enabled(Features::registration()),
+        'membresias' => $membresias,
+        'disciplinas' => $disciplinas,
+        'gimnasio' => $gimnasio,
     ]);
 })->name('home');
 

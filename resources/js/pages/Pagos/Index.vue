@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { QrCode, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import axios from 'axios';
 
 const props = defineProps({
     pagos: Array,
