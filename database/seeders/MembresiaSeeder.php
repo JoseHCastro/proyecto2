@@ -14,31 +14,31 @@ class MembresiaSeeder extends Seeder
     {
         $membresias = [
             [
-                'nombre' => 'Membresía Mensual',
+                'nombre' => 'Mensual',
                 'descripcion' => 'Acceso completo al gimnasio durante 30 días.',
                 'duracion_dias' => 30,
                 'activo' => true,
             ],
             [
-                'nombre' => 'Membresía Trimestral',
+                'nombre' => 'Trimestral',
                 'descripcion' => 'Acceso completo al gimnasio durante 90 días.',
                 'duracion_dias' => 90,
                 'activo' => true,
             ],
             [
-                'nombre' => 'Membresía Semestral',
+                'nombre' => 'Semestral',
                 'descripcion' => 'Acceso completo al gimnasio durante 180 días.',
                 'duracion_dias' => 180,
                 'activo' => true,
             ],
             [
-                'nombre' => 'Membresía Anual',
+                'nombre' => 'Anual',
                 'descripcion' => 'Acceso completo al gimnasio durante 365 días.',
                 'duracion_dias' => 365,
                 'activo' => true,
             ],
             [
-                'nombre' => 'Membresía Semanal',
+                'nombre' => 'Semanal',
                 'descripcion' => 'Acceso completo al gimnasio durante 7 días.',
                 'duracion_dias' => 7,
                 'activo' => true,

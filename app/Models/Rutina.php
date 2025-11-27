@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Rutina extends Model
 {
     protected $table = 'rutinas';
+    
+    public $timestamps = false;
 
     protected $fillable = [
         'socio_id',

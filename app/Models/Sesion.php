@@ -33,6 +33,6 @@ class Sesion extends Model
 
     public function paquetes(): BelongsToMany
     {
-        return $this->belongsToMany(Paquete::class, 'clase_paquete');
+        return $this->belongsToMany(Paquete::class, 'sesion_paquete');
     }
 }

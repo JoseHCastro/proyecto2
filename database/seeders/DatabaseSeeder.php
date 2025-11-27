@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             DisciplinaSeeder::class,
             MembresiaSeeder::class,
             HorarioSeeder::class,
+            SesionSeeder::class,
+            PaqueteSeeder::class,
+            RutinaSeeder::class,
         ]);
     }
 }

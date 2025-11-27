@@ -30,7 +30,7 @@ class Paquete extends Model
 
     public function sesiones(): BelongsToMany
     {
-        return $this->belongsToMany(Sesion::class, 'clase_paquete');
+        return $this->belongsToMany(Sesion::class, 'sesion_paquete');
     }
 
     public function suscripciones(): HasMany

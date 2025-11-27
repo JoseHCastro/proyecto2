@@ -70,11 +70,6 @@ const props = defineProps({
                                         Editar Disciplina
                                     </Link>
                                 </Button>
-                                <Button variant="outline" as-child>
-                                    <Link href="/disciplinas">
-                                        Volver al listado
-                                    </Link>
-                                </Button>
                             </div>
                         </CardContent>
                     </Card>

@@ -42,6 +42,21 @@ const mainNavItems: NavItem[] = [
         href: '/disciplinas',
         icon: Folder,
     },
+    {
+        title: 'Sesiones',
+        href: '/sesiones',
+        icon: Folder,
+    },
+    {
+        title: 'Paquetes',
+        href: '/paquetes',
+        icon: Folder,
+    },
+    {
+        title: 'Rutinas',
+        href: '/rutinas',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

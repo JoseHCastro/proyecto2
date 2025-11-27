@@ -11,11 +11,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('socio_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('instructor_id')->constrained('users')->onDelete('cascade');
-            $table->string('ejercicio');
-            $table->integer('series');
-            $table->integer('repeticiones');
-            $table->date('creada_en'); // Using date as per diagram, though timestamps() adds created_at
-            $table->timestamps();
+            $table->string('ejercicio', 200);
+            $table->integer('series')->unsigned();
+            $table->integer('repeticiones')->unsigned();
+            $table->date('creada_en');
         });
     }
 

@@ -19,6 +19,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('membresias', \App\Http\Controllers\MembresiaController::class);
     Route::resource('horarios', \App\Http\Controllers\HorarioController::class);
     Route::resource('disciplinas', \App\Http\Controllers\DisciplinaController::class);
+    Route::resource('sesiones', \App\Http\Controllers\SesionController::class);
+    Route::resource('paquetes', \App\Http\Controllers\PaqueteController::class);
+    Route::resource('rutinas', \App\Http\Controllers\RutinaController::class);
 });
 
 require __DIR__ . '/settings.php';
