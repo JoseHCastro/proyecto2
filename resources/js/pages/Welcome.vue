@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { dashboard, login, register } from '@/routes';
+import { dashboard as _dashboard, login as _login, register as _register } from '@/routes';
+import { wrapRoute } from '@/utils/routes';
 import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,11 @@ import { Badge } from '@/components/ui/badge';
 import { Dumbbell, Users, Calendar, Clock, MapPin, Phone, Mail, CheckCircle } from 'lucide-vue-next';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import AppFooter from '@/components/AppFooter.vue';
+
+// Wrap routes to use full URLs
+const dashboard = wrapRoute(_dashboard);
+const login = wrapRoute(_login);
+const register = wrapRoute(_register);
 
 const props = withDefaults(
     defineProps<{
@@ -169,7 +175,7 @@ const getDescripcionDisciplina = (disciplina: any) => {
                             <div class="mb-6 text-center">
                                 <h3 class="text-2xl font-bold text-foreground">{{ membresia.nombre }}</h3>
                                 <p v-if="membresia.descripcion" class="text-muted-foreground">{{ membresia.descripcion
-                                    }}</p>
+                                }}</p>
                             </div>
 
                             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

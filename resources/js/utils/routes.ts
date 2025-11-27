@@ -1,30 +1,34 @@
 import { usePage } from '@inertiajs/vue3';
 
 /**
- * Wrapper para las rutas de Wayfinder que agrega el prefijo de APP_URL
+ * Get the full URL for a Wayfinder route
+ * Prepends the APP_URL to handle subdirectory deployments
  */
-export function useRoute() {
+export function useRouteUrl(path: string): string {
     const page = usePage();
     const appUrl = (page.props.app_url as string) || '';
 
-    return (routeFn: (...args: any[]) => any) => {
-        return (...args: any[]) => {
-            const result = routeFn(...args);
+    // Remove trailing slash from appUrl and leading slash from path if both exist
+    const cleanAppUrl = appUrl.replace(/\/$/, '');
+    const cleanPath = path.startsWith('/') ? path : '/' + path;
 
-            // Si es un objeto con url, agregar el prefijo
-            if (typeof result === 'object' && result.url) {
-                return {
-                    ...result,
-                    url: appUrl + result.url
-                };
-            }
+    return cleanAppUrl + cleanPath;
+}
 
-            // Si es un string (solo URL), agregar el prefijo
-            if (typeof result === 'string') {
-                return appUrl + result;
-            }
-
-            return result;
-        };
-    };
+/**
+ * Wrap a Wayfinder route function to use full URLs
+ */
+export function wrapRoute<T extends (...args: any[]) => any>(
+    routeFn: T
+): T {
+    return ((...args: any[]) => {
+        const result = routeFn(...args);
+        if (typeof result === 'object' && result.url) {
+            return {
+                ...result,
+                url: useRouteUrl(result.url),
+            };
+        }
+        return result;
+    }) as T;
 }
