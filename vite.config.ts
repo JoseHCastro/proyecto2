@@ -5,12 +5,13 @@ import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    base: process.env.ASSET_URL || '/',
+    base: process.env.VITE_BASE_URL || '/',
     plugins: [
         laravel({
             input: ['resources/js/app.ts'],
             ssr: 'resources/js/ssr.ts',
             refresh: true,
+            buildDirectory: 'build',
         }),
         tailwindcss(),
         wayfinder({
