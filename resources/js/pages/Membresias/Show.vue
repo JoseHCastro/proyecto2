@@ -27,10 +27,10 @@ const props = defineProps({
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/membresias">
+                        <AppLink href="/membresias">
                         <ArrowLeft class="mr-2 h-4 w-4" />
                         Volver a la lista
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -48,7 +48,7 @@ const props = defineProps({
                                 <Link :href="`/membresias/${membresia.id}/edit`">
                                 <Pencil class="mr-2 h-4 w-4" />
                                 Editar
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
                     </CardHeader>

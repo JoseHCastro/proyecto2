@@ -36,7 +36,7 @@ const imprimir = () => {
                         <Link :href="`/suscripciones/${pago.suscripcion_id}`">
                             <ArrowLeft class="mr-2 h-4 w-4" />
                             Volver
-                        </Link>
+                        </AppLink>
                     </Button>
                     <Button variant="default" size="sm" @click="descargarPDF" class="print:hidden">
                         <Download class="mr-2 h-4 w-4" />

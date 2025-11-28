@@ -76,10 +76,10 @@ const deleteRutina = async (id, ejercicio) => {
                                 />
                             </div>
                             <Button as-child>
-                                <Link href="/rutinas/create">
+                                <AppLink href="/rutinas/create">
                                     <Plus class="mr-2 h-4 w-4" />
                                     Nueva Rutina
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
 
@@ -114,12 +114,12 @@ const deleteRutina = async (id, ejercicio) => {
                                                 <Button variant="ghost" size="icon" as-child>
                                                     <Link :href="`/rutinas/${rutina.id}`">
                                                         <Eye class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="ghost" size="icon" as-child>
                                                     <Link :href="`/rutinas/${rutina.id}/edit`">
                                                         <Pencil class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button
                                                     variant="ghost"

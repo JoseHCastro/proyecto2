@@ -30,10 +30,10 @@ const props = defineProps({
                                 <CardDescription class="mt-1">Información de contacto y ubicación</CardDescription>
                             </div>
                             <Button as-child>
-                                <Link href="/informacion/edit">
+                                <AppLink href="/informacion/edit">
                                     <Pencil class="mr-2 h-4 w-4" />
                                     Editar
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
                     </CardHeader>

@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     socios: Array,
@@ -23,7 +24,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/rutinas', {
+    form.post(toUrl('/rutinas'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Creado!',
@@ -55,10 +56,10 @@ const submit = () => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/rutinas">
+                        <AppLink href="/rutinas">
                             <ArrowLeft class="h-4 w-4 mr-2" />
                             Volver
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -156,9 +157,9 @@ const submit = () => {
                                     Crear Rutina
                                 </Button>
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/rutinas">
+                                    <AppLink href="/rutinas">
                                         Cancelar
-                                    </Link>
+                                    </AppLink>
                                 </Button>
                             </div>
                         </form>

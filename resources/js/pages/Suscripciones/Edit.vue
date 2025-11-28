@@ -49,10 +49,10 @@ const submit = () => {
             <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/suscripciones">
+                        <AppLink href="/suscripciones">
                             <ArrowLeft class="mr-2 h-4 w-4" />
                             Volver al listado
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -123,7 +123,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-3">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/suscripciones">Cancelar</Link>
+                                    <AppLink href="/suscripciones">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">
                                     {{ form.processing ? 'Guardando...' : 'Guardar Cambios' }}

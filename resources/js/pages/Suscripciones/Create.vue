@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     clientes: Array,
@@ -43,7 +44,7 @@ const diasEntrePagos = computed(() => {
 });
 
 const submit = () => {
-    form.post('/suscripciones', {
+    form.post(toUrl('/suscripciones'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Creado!',
@@ -74,10 +75,10 @@ const submit = () => {
             <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/suscripciones">
+                        <Link :href="toUrl('/suscripciones')">
                             <ArrowLeft class="mr-2 h-4 w-4" />
                             Volver al listado
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -193,7 +194,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-3">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/suscripciones">Cancelar</Link>
+                                    <Link :href="toUrl('/suscripciones')">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">
                                     {{ form.processing ? 'Creando...' : 'Crear Suscripción' }}

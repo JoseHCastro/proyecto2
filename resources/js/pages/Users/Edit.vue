@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     user: Object,
@@ -33,13 +34,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/users/${props.user.id}`, {
+    form.put(toUrl(`/users/${props.user.id}`), {
         onSuccess: () => {
             successAlert({
                 title: '¡Usuario actualizado!',
                 text: 'El usuario ha sido actualizado correctamente'
             }).then(() => {
-                router.visit('/users');
+                router.visit(toUrl('/users'));
             });
         },
         onError: () => {
@@ -167,7 +168,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-4">
                                 <Button variant="outline" type="button" as-child>
-                                    <Link href="/users">Cancelar</Link>
+                                    <AppLink href="/users">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">Actualizar</Button>
                             </div>

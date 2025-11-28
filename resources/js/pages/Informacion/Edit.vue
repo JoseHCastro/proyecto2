@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { ArrowLeft } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     informacion: Object,
@@ -21,7 +22,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put('/informacion', {
+    form.put(toUrl('/informacion'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Actualizado!',
@@ -52,10 +53,10 @@ const submit = () => {
             <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/informacion">
+                        <AppLink href="/informacion">
                             <ArrowLeft class="mr-2 h-4 w-4" />
                             Volver
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -126,7 +127,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-3">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/informacion">Cancelar</Link>
+                                    <AppLink href="/informacion">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">
                                     {{ form.processing ? 'Guardando...' : 'Guardar Cambios' }}

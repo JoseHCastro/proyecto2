@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { QrCode, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
 import axios from 'axios';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     pagos: Array,
@@ -20,7 +21,7 @@ const pollingInterval = ref(null);
 
 const generarQr = () => {
     loading.value = true;
-    router.post('/pagos/generar-qr', {}, {
+    router.post(toUrl('/pagos/generar-qr'), {}, {
         onSuccess: () => {
             console.log('QR Generado con éxito', page.props.flash?.qr_data);
             loading.value = false;

@@ -58,10 +58,10 @@ const getEstadoBadge = (estado) => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4 flex justify-end">
                     <Button as-child>
-                        <Link href="/suscripciones/create">
+                        <AppLink href="/suscripciones/create">
                             <Plus class="mr-2 h-4 w-4" />
                             Nueva Suscripción
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -116,12 +116,12 @@ const getEstadoBadge = (estado) => {
                                                 <Button variant="ghost" size="sm" as-child>
                                                     <Link :href="`/suscripciones/${suscripcion.id}`">
                                                         <Eye class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="ghost" size="sm" as-child>
                                                     <Link :href="`/suscripciones/${suscripcion.id}/edit`">
                                                         <Pencil class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                             </div>
                                         </TableCell>

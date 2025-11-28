@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     roles: Array,
@@ -32,13 +33,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/users', {
+    form.post(toUrl('/users'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Usuario creado!',
                 text: 'El usuario ha sido creado correctamente'
             }).then(() => {
-                router.visit('/users');
+                router.visit(toUrl('/users'));
             });
         },
         onError: () => {
@@ -166,7 +167,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-4">
                                 <Button variant="outline" type="button" as-child>
-                                    <Link href="/users">Cancelar</Link>
+                                    <AppLink href="/users">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">Guardar</Button>
                             </div>

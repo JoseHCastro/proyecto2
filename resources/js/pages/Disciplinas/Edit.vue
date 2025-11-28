@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     disciplina: Object,
@@ -17,13 +18,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/disciplinas/${props.disciplina.id}`, {
+    form.put(toUrl(`/disciplinas/${props.disciplina.id}`), {
         onSuccess: () => {
             successAlert({
                 title: '¡Disciplina actualizada!',
                 text: 'La disciplina ha sido actualizada correctamente'
             }).then(() => {
-                router.visit('/disciplinas');
+                router.visit(toUrl('/disciplinas'));
             });
         },
         onError: () => {
@@ -81,9 +82,9 @@ const submit = () => {
 
                             <div class="flex justify-end gap-4">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/disciplinas">
+                                    <AppLink href="/disciplinas">
                                         Cancelar
-                                    </Link>
+                                    </AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">
                                     {{ form.processing ? 'Actualizando...' : 'Actualizar' }}

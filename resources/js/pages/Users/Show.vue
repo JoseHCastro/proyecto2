@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Pencil, ArrowLeft, Plus, Trash2, Scale, Ruler, Calendar, Clock } from 'lucide-vue-next';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     user: Object,
@@ -30,7 +31,7 @@ const form = useForm({
 });
 
 const submitMedicion = () => {
-    form.post('/mediciones-progreso', {
+    form.post(toUrl('/mediciones-progreso'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Registrado!',
@@ -90,10 +91,10 @@ const calcularIMC = (peso, estatura) => {
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/users">
+                        <AppLink href="/users">
                         <ArrowLeft class="mr-2 h-4 w-4" />
                         Volver a la lista
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -109,7 +110,7 @@ const calcularIMC = (peso, estatura) => {
                                 <Link :href="`/users/${user.id}/edit`">
                                 <Pencil class="mr-2 h-4 w-4" />
                                 Editar
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
                     </CardHeader>

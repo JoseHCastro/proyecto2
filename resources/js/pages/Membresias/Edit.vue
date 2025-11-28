@@ -13,6 +13,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     membresia: Object,
@@ -26,13 +27,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/membresias/${props.membresia.id}`, {
+    form.put(toUrl(`/membresias/${props.membresia.id}`), {
         onSuccess: () => {
             successAlert({
                 title: '¡Membresía actualizada!',
                 text: 'La membresía ha sido actualizada correctamente'
             }).then(() => {
-                router.visit('/membresias');
+                router.visit(toUrl('/membresias'));
             });
         },
         onError: () => {
@@ -102,7 +103,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-4">
                                 <Button variant="outline" type="button" as-child>
-                                    <Link href="/membresias">Cancelar</Link>
+                                    <AppLink href="/membresias">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">Actualizar</Button>
                             </div>

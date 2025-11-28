@@ -36,10 +36,10 @@ const diasSemana = {
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/sesiones">
+                        <AppLink href="/sesiones">
                         <ArrowLeft class="h-4 w-4 mr-2" />
                         Volver
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -113,7 +113,7 @@ const diasSemana = {
                                 <Button as-child>
                                     <Link :href="`/sesiones/${sesion.id}/edit`">
                                         Editar Sesión
-                                    </Link>
+                                    </AppLink>
                                 </Button>
                             </div>
                         </CardContent>

@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Clock } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
 import { ref } from 'vue';
+import { toUrl } from '@/utils/routes';
 
 const diasSemana = [
     { value: 1, label: 'Lunes' },
@@ -42,13 +43,13 @@ const toggleDia = (dia) => {
 const submit = () => {
     form.dia_semana = diasSeleccionados.value;
     
-    form.post('/horarios', {
+    form.post(toUrl('/horarios'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Horario creado!',
                 text: 'El horario ha sido creado correctamente'
             }).then(() => {
-                router.visit('/horarios');
+                router.visit(toUrl('/horarios'));
             });
         },
         onError: () => {
@@ -150,7 +151,7 @@ const submit = () => {
                             <!-- Botones -->
                             <div class="flex justify-end gap-4">
                                 <Button variant="outline" type="button" as-child>
-                                    <Link href="/horarios">Cancelar</Link>
+                                    <AppLink href="/horarios">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">Guardar</Button>
                             </div>

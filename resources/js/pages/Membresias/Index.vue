@@ -119,10 +119,10 @@ const deleteMembresia = async (id) => {
                                 </Select>
                             </div>
                             <Button as-child>
-                                <Link href="/membresias/create">
+                                <AppLink href="/membresias/create">
                                 <Plus class="mr-2 h-4 w-4" />
                                 Nueva Membresía
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
 
@@ -152,12 +152,12 @@ const deleteMembresia = async (id) => {
                                                 <Button variant="outline" size="sm" as-child title="Ver">
                                                     <Link :href="`/membresias/${membresia.id}`">
                                                     <Eye class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
                                                     <Link :href="`/membresias/${membresia.id}/edit`">
                                                     <Pencil class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="destructive" size="sm" @click="deleteMembresia(membresia.id)"
                                                     title="Eliminar">

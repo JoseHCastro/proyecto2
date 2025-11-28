@@ -76,10 +76,10 @@ const deleteDisciplina = (id) => {
                                     class="w-full md:w-64" />
                             </div>
                             <Button as-child>
-                                <Link href="/disciplinas/create">
+                                <AppLink href="/disciplinas/create">
                                 <Plus class="mr-2 h-4 w-4" />
                                 Nueva Disciplina
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
 
@@ -101,12 +101,12 @@ const deleteDisciplina = (id) => {
                                                 <Button variant="outline" size="sm" as-child title="Ver">
                                                     <Link :href="`/disciplinas/${disciplina.id}`">
                                                     <Eye class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
                                                     <Link :href="`/disciplinas/${disciplina.id}/edit`">
                                                     <Pencil class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="destructive" size="sm" @click="deleteDisciplina(disciplina.id)"
                                                     title="Eliminar">
@@ -128,7 +128,7 @@ const deleteDisciplina = (id) => {
                                             'bg-primary text-primary-foreground border-primary': link.active,
                                             'bg-background hover:bg-accent border-border': !link.active
                                         }" v-html="link.label">
-                                    </Link>
+                                    </AppLink>
                                     <span v-else
                                         class="px-3 py-2 text-sm border rounded-md bg-muted text-muted-foreground border-border"
                                         v-html="link.label">

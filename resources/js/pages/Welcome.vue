@@ -68,10 +68,10 @@ const getDescripcionDisciplina = (disciplina: any) => {
         <nav
             class="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div class="container mx-auto flex h-16 items-center justify-between px-4">
-                <Link href="/" class="flex items-center gap-2">
+                <AppLink href="/" class="flex items-center gap-2">
                 <Dumbbell class="h-8 w-8 text-primary" />
                 <span class="text-2xl font-bold text-foreground">Elevation Gym</span>
-                </Link>
+                </AppLink>
 
                 <div class="flex items-center gap-4">
                     <ThemeSwitcher />
@@ -80,18 +80,18 @@ const getDescripcionDisciplina = (disciplina: any) => {
                     <Button variant="default">
                         Dashboard
                     </Button>
-                    </Link>
+                    </AppLink>
                     <template v-else>
                         <Link :href="login()">
                         <Button variant="ghost">
                             Iniciar Sesión
                         </Button>
-                        </Link>
+                        </AppLink>
                         <Link v-if="canRegister" :href="register()">
                         <Button variant="default">
                             Registrarse
                         </Button>
-                        </Link>
+                        </AppLink>
                     </template>
                 </div>
             </div>
@@ -118,7 +118,7 @@ const getDescripcionDisciplina = (disciplina: any) => {
                                 <Users class="h-5 w-5" />
                                 Únete Ahora
                             </Button>
-                            </Link>
+                            </AppLink>
                             <a href="#membresias">
                                 <Button size="lg" variant="outline">
                                     Ver Planes
@@ -237,7 +237,7 @@ const getDescripcionDisciplina = (disciplina: any) => {
                                         <Button class="w-full">
                                             Elegir Plan
                                         </Button>
-                                        </Link>
+                                        </AppLink>
                                     </CardContent>
                                 </Card>
                             </div>

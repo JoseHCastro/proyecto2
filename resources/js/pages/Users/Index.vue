@@ -119,10 +119,10 @@ const deleteUser = async (id) => {
                                 </Select>
                             </div>
                             <Button as-child>
-                                <Link href="/users/create">
+                                <AppLink href="/users/create">
                                 <UserPlus class="mr-2 h-4 w-4" />
                                 Nuevo Usuario
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
 
@@ -157,12 +157,12 @@ const deleteUser = async (id) => {
                                                 <Button variant="outline" size="sm" as-child title="Ver">
                                                     <Link :href="`/users/${user.id}`">
                                                     <Eye class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
                                                     <Link :href="`/users/${user.id}/edit`">
                                                     <Pencil class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="destructive" size="sm" @click="deleteUser(user.id)"
                                                     title="Eliminar">

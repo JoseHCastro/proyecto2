@@ -25,10 +25,10 @@ const props = defineProps({
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/rutinas">
+                        <AppLink href="/rutinas">
                             <ArrowLeft class="h-4 w-4 mr-2" />
                             Volver
-                        </Link>
+                        </AppLink>
                     </Button>
                 </div>
 
@@ -96,7 +96,7 @@ const props = defineProps({
                                 <Button as-child>
                                     <Link :href="`/rutinas/${rutina.id}/edit`">
                                         Editar Rutina
-                                    </Link>
+                                    </AppLink>
                                 </Button>
                             </div>
                         </CardContent>

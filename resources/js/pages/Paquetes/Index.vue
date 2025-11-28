@@ -78,10 +78,10 @@ const deletePaquete = async (id, nombre) => {
                                 />
                             </div>
                             <Button as-child>
-                                <Link href="/paquetes/create">
+                                <AppLink href="/paquetes/create">
                                     <Plus class="mr-2 h-4 w-4" />
                                     Nuevo Paquete
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
 
@@ -127,12 +127,12 @@ const deletePaquete = async (id, nombre) => {
                                                 <Button variant="ghost" size="icon" as-child>
                                                     <Link :href="`/paquetes/${paquete.id}`">
                                                         <Eye class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="ghost" size="icon" as-child>
                                                     <Link :href="`/paquetes/${paquete.id}/edit`">
                                                         <Pencil class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button
                                                     variant="ghost"

@@ -101,10 +101,10 @@ const deleteHorario = async (id) => {
                                     class="w-full md:w-64" />
                             </div>
                             <Button as-child>
-                                <Link href="/horarios/create">
+                                <AppLink href="/horarios/create">
                                 <Plus class="mr-2 h-4 w-4" />
                                 Nuevo Horario
-                                </Link>
+                                </AppLink>
                             </Button>
                         </div>
 
@@ -144,12 +144,12 @@ const deleteHorario = async (id) => {
                                                 <Button variant="outline" size="sm" as-child title="Ver">
                                                     <Link :href="`/horarios/${horario.id}`">
                                                     <Eye class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
                                                     <Link :href="`/horarios/${horario.id}/edit`">
                                                     <Pencil class="h-4 w-4" />
-                                                    </Link>
+                                                    </AppLink>
                                                 </Button>
                                                 <Button variant="destructive" size="sm" @click="deleteHorario(horario.id)"
                                                     title="Eliminar">

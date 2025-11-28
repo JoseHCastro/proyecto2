@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const form = useForm({
     nombre: '',
@@ -14,13 +15,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/membresias', {
+    form.post(toUrl('/membresias'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Membresía creada!',
                 text: 'La membresía ha sido creada correctamente'
             }).then(() => {
-                router.visit('/membresias');
+                router.visit(toUrl('/membresias'));
             });
         },
         onError: () => {
@@ -75,7 +76,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-4">
                                 <Button variant="outline" type="button" as-child>
-                                    <Link href="/membresias">Cancelar</Link>
+                                    <AppLink href="/membresias">Cancelar</AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">Guardar</Button>
                             </div>

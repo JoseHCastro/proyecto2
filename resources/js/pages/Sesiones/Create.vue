@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { toUrl } from '@/utils/routes';
 
 const props = defineProps({
     disciplinas: Array,
@@ -19,13 +20,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/sesiones', {
+    form.post(toUrl('/sesiones'), {
         onSuccess: () => {
             successAlert({
                 title: '¡Sesión creada!',
                 text: 'La sesión ha sido creada correctamente'
             }).then(() => {
-                router.visit('/sesiones');
+                router.visit(toUrl('/sesiones'));
             });
         },
         onError: () => {
@@ -123,9 +124,9 @@ const formatHorario = (horario) => {
 
                             <div class="flex justify-end gap-4">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/sesiones">
+                                    <AppLink href="/sesiones">
                                         Cancelar
-                                    </Link>
+                                    </AppLink>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">
                                     {{ form.processing ? 'Guardando...' : 'Crear Sesión' }}
