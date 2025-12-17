@@ -97,6 +97,12 @@ class RutinaController extends Controller
      */
     public function edit(Rutina $rutina)
     {
+        // Los clientes no pueden editar rutinas
+        if (auth()->user()->hasRole('Cliente')) {
+            return redirect()->route('rutinas.index')
+                ->with('error', 'No tienes permiso para editar rutinas.');
+        }
+
         $rutina->load(['socio', 'instructor']);
         
         $socios = User::role('Cliente')->orderBy('name', 'asc')->get();
@@ -114,6 +120,12 @@ class RutinaController extends Controller
      */
     public function update(Request $request, Rutina $rutina)
     {
+        // Los clientes no pueden actualizar rutinas
+        if (auth()->user()->hasRole('Cliente')) {
+            return redirect()->route('rutinas.index')
+                ->with('error', 'No tienes permiso para editar rutinas.');
+        }
+
         $validated = $request->validate([
             'socio_id' => 'required|exists:users,id',
             'instructor_id' => 'required|exists:users,id',

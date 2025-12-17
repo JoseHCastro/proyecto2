@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Paquete;
 use App\Models\Membresia;
 use App\Models\Sesion;
+use App\Models\Suscripcion;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -37,10 +38,20 @@ class PaqueteController extends Controller
 
         $paquetes = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
 
+        // Obtener IDs de paquetes con suscripción activa para el cliente
+        $paquetesSuscritos = [];
+        if ($isCliente) {
+            $paquetesSuscritos = Suscripcion::where('usuario_id', $user->id)
+                ->where('estado', 'activo')
+                ->pluck('paquete_id')
+                ->toArray();
+        }
+
         return Inertia::render('Paquetes/Index', [
             'paquetes' => $paquetes,
             'filters' => $request->only(['search']),
             'isCliente' => $isCliente,
+            'paquetesSuscritos' => $paquetesSuscritos,
         ]);
     }
 
@@ -101,6 +112,12 @@ class PaqueteController extends Controller
      */
     public function edit(Paquete $paquete)
     {
+        // Los clientes no pueden editar paquetes
+        if (auth()->user()->hasRole('Cliente')) {
+            return redirect()->route('paquetes.index')
+                ->with('error', 'No tienes permiso para editar paquetes.');
+        }
+
         $paquete->load(['membresia', 'sesiones']);
         
         $membresias = Membresia::where('activo', true)->orderBy('nombre', 'asc')->get();
@@ -118,6 +135,12 @@ class PaqueteController extends Controller
      */
     public function update(Request $request, Paquete $paquete)
     {
+        // Los clientes no pueden actualizar paquetes
+        if (auth()->user()->hasRole('Cliente')) {
+            return redirect()->route('paquetes.index')
+                ->with('error', 'No tienes permiso para editar paquetes.');
+        }
+
         $validated = $request->validate([
             'nombre' => 'required|string|max:100|unique:paquetes,nombre,' . $paquete->id,
             'descripcion' => 'nullable|string|max:500',
@@ -143,6 +166,12 @@ class PaqueteController extends Controller
      */
     public function destroy(Paquete $paquete)
     {
+        // Los clientes no pueden eliminar paquetes
+        if (auth()->user()->hasRole('Cliente')) {
+            return redirect()->route('paquetes.index')
+                ->with('error', 'No tienes permiso para eliminar paquetes.');
+        }
+
         $paquete->delete();
 
         return redirect()->route('paquetes.index')->with('success', 'Paquete eliminado exitosamente.');

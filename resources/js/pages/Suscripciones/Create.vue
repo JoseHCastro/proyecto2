@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,14 @@ import { index as suscripcionesIndex, store as suscripcionesStore } from '@/rout
 const props = defineProps({
     clientes: Array,
     paquetes: Array,
+    isCliente: {
+        type: Boolean,
+        default: false,
+    },
+    paquetePreseleccionado: {
+        type: Number,
+        default: null,
+    },
 });
 
 const form = useForm({
@@ -21,6 +29,16 @@ const form = useForm({
     paquete_id: '',
     renovacion_automatica: false,
     cuotas: 1,
+});
+
+// Si es cliente, preseleccionar su ID
+onMounted(() => {
+    if (props.isCliente && props.clientes.length > 0) {
+        form.usuario_id = props.clientes[0].id;
+    }
+    if (props.paquetePreseleccionado) {
+        form.paquete_id = props.paquetePreseleccionado;
+    }
 });
 
 const paqueteSeleccionado = computed(() => {
@@ -91,7 +109,18 @@ const submit = () => {
                     </CardHeader>
                     <CardContent>
                         <form @submit.prevent="submit" class="space-y-6">
-                            <div class="space-y-2">
+                            <!-- Cliente: Campo fijo -->
+                            <div v-if="isCliente" class="space-y-2">
+                                <Label>Cliente</Label>
+                                <div class="p-3 rounded-lg border bg-muted/50">
+                                    <span class="font-medium">{{ clientes[0]?.name }}</span>
+                                    <span class="text-muted-foreground ml-2">{{ clientes[0]?.email }}</span>
+                                </div>
+                                <input type="hidden" v-model="form.usuario_id" />
+                            </div>
+
+                            <!-- Admin: Selector de cliente -->
+                            <div v-else class="space-y-2">
                                 <Label for="usuario_id">Cliente *</Label>
                                 <Select v-model="form.usuario_id" required>
                                     <SelectTrigger id="usuario_id">
@@ -110,7 +139,11 @@ const submit = () => {
 
                             <div class="space-y-2">
                                 <Label for="paquete_id">Paquete *</Label>
-                                <Select v-model="form.paquete_id" required>
+                                <div v-if="paquetes.length === 0" class="p-4 rounded-lg border border-dashed text-center text-muted-foreground">
+                                    <p v-if="isCliente">No hay paquetes disponibles. Ya estás suscrito a todos los paquetes activos.</p>
+                                    <p v-else>No hay paquetes activos disponibles.</p>
+                                </div>
+                                <Select v-else v-model="form.paquete_id" required>
                                     <SelectTrigger id="paquete_id">
                                         <SelectValue placeholder="Selecciona un paquete" />
                                     </SelectTrigger>

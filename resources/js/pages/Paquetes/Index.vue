@@ -16,9 +16,10 @@ import {
     TableRow,
 } from '@/components/ui/table';
 
-import { Plus, Search, Eye, Pencil, Trash2, Package, Clock, Zap, CreditCard } from 'lucide-vue-next';
+import { Plus, Search, Eye, Pencil, Trash2, Package, Clock, Zap, CreditCard, ShoppingCart } from 'lucide-vue-next';
 import { confirmAlert, successAlert } from '@/composables/useSweetAlert';
 import { index as paquetesIndex, create as paquetesCreate, show as paquetesShow, edit as paquetesEdit, destroy as paquetesDestroy } from '@/routes/paquetes';
+import { create as suscripcionesCreate } from '@/routes/suscripciones';
 
 const props = defineProps({
     paquetes: Object,
@@ -27,7 +28,16 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    paquetesSuscritos: {
+        type: Array,
+        default: () => [],
+    },
 });
+
+// Verificar si el cliente ya está suscrito a un paquete
+const estaSuscrito = (paqueteId) => {
+    return props.paquetesSuscritos.includes(paqueteId);
+};
 
 const search = ref(props.filters?.search || '');
 
@@ -141,12 +151,26 @@ const deletePaquete = async (id, nombre) => {
                                 </div>
                             </CardContent>
                             <CardFooter class="flex gap-2 pt-0">
-                                <Button variant="default" class="flex-1" as-child>
+                                <Button variant="outline" class="flex-1" as-child>
                                     <Link :href="paquetesShow.url({ paquete: paquete.id })">
                                         <Eye class="h-4 w-4 mr-2" />
                                         Ver detalles
                                     </Link>
                                 </Button>
+                                <Button 
+                                    v-if="paquete.activo && !estaSuscrito(paquete.id)"
+                                    variant="default" 
+                                    class="flex-1" 
+                                    as-child
+                                >
+                                    <Link :href="`${suscripcionesCreate.url()}?paquete_id=${paquete.id}`">
+                                        <ShoppingCart class="h-4 w-4 mr-2" />
+                                        Suscribirme
+                                    </Link>
+                                </Button>
+                                <Badge v-else-if="estaSuscrito(paquete.id)" variant="secondary" class="flex-1 justify-center py-2">
+                                    Ya suscrito
+                                </Badge>
                             </CardFooter>
                         </Card>
                     </div>

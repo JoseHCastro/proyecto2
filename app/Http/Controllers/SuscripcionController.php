@@ -32,19 +32,61 @@ class SuscripcionController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $clientes = User::role('Cliente')->get();
-        $paquetes = Paquete::with('membresia')->where('activo', true)->get();
+        $user = auth()->user();
+        $isCliente = $user->hasRole('Cliente');
+
+        // Para clientes: obtener IDs de paquetes con suscripciones activas
+        $paquetesConSuscripcionActiva = [];
+        if ($isCliente) {
+            $paquetesConSuscripcionActiva = Suscripcion::where('usuario_id', $user->id)
+                ->where('estado', 'activo')
+                ->pluck('paquete_id')
+                ->toArray();
+        }
+
+        // Filtrar paquetes activos (y sin suscripción activa para clientes)
+        $paquetesQuery = Paquete::with('membresia')->where('activo', true);
+        if ($isCliente) {
+            $paquetesQuery->whereNotIn('id', $paquetesConSuscripcionActiva);
+        }
+        $paquetes = $paquetesQuery->get();
+
+        // Clientes solo se ven a ellos mismos
+        $clientes = $isCliente ? collect([$user]) : User::role('Cliente')->get();
+
+        // Si viene de un paquete específico
+        $paquetePreseleccionado = $request->query('paquete_id');
 
         return Inertia::render('Suscripciones/Create', [
             'clientes' => $clientes,
             'paquetes' => $paquetes,
+            'isCliente' => $isCliente,
+            'paquetePreseleccionado' => $paquetePreseleccionado ? (int) $paquetePreseleccionado : null,
         ]);
     }
 
     public function store(Request $request)
     {
+        $user = auth()->user();
+        $isCliente = $user->hasRole('Cliente');
+
+        // Si es cliente, forzar que el usuario_id sea él mismo
+        if ($isCliente) {
+            $request->merge(['usuario_id' => $user->id]);
+
+            // Verificar que no tenga ya una suscripción activa a este paquete
+            $yaSuscrito = Suscripcion::where('usuario_id', $user->id)
+                ->where('paquete_id', $request->paquete_id)
+                ->where('estado', 'activo')
+                ->exists();
+
+            if ($yaSuscrito) {
+                return back()->withErrors(['paquete_id' => 'Ya tienes una suscripción activa a este paquete.']);
+            }
+        }
+
         // Obtener el paquete para validar las cuotas
         $paquete = Paquete::with('membresia')->findOrFail($request->paquete_id);
         $maxCuotas = floor($paquete->membresia->duracion_dias / 2);
@@ -127,6 +169,12 @@ class SuscripcionController extends Controller
 
     public function edit(Suscripcion $suscripcione)
     {
+        // Los clientes no pueden editar suscripciones
+        if (auth()->user()->hasRole('Cliente')) {
+            return redirect()->route('suscripciones.index')
+                ->with('error', 'No tienes permiso para editar suscripciones.');
+        }
+
         $suscripcione->load('paquete.membresia', 'usuario');
         $clientes = User::role('Cliente')->get();
         $paquetes = Paquete::with('membresia')->where('activo', true)->get();
@@ -140,6 +188,12 @@ class SuscripcionController extends Controller
 
     public function update(Request $request, Suscripcion $suscripcione)
     {
+        // Los clientes no pueden actualizar suscripciones
+        if (auth()->user()->hasRole('Cliente')) {
+            return redirect()->route('suscripciones.index')
+                ->with('error', 'No tienes permiso para editar suscripciones.');
+        }
+
         $validated = $request->validate([
             'estado' => 'required|in:activo,inactivo,suspendido,vencida,cancelada',
             'renovacion_automatica' => 'boolean',
