@@ -15,14 +15,24 @@ class PaqueteController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth()->user();
+        $isCliente = $user->hasRole('Cliente');
+
         $query = Paquete::with(['membresia', 'sesiones.disciplina']);
+
+        // Si es Cliente, solo mostrar paquetes activos
+        if ($isCliente) {
+            $query->where('activo', true);
+        }
 
         if ($request->has('search')) {
             $search = $request->input('search');
-            $query->where('nombre', 'like', "%{$search}%")
-                ->orWhereHas('membresia', function ($q) use ($search) {
-                    $q->where('nombre', 'like', "%{$search}%");
-                });
+            $query->where(function($q) use ($search) {
+                $q->where('nombre', 'like', "%{$search}%")
+                    ->orWhereHas('membresia', function ($subQ) use ($search) {
+                        $subQ->where('nombre', 'like', "%{$search}%");
+                    });
+            });
         }
 
         $paquetes = $query->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
@@ -30,6 +40,7 @@ class PaqueteController extends Controller
         return Inertia::render('Paquetes/Index', [
             'paquetes' => $paquetes,
             'filters' => $request->only(['search']),
+            'isCliente' => $isCliente,
         ]);
     }
 

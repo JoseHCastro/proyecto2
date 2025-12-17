@@ -14,12 +14,21 @@ class SuscripcionController extends Controller
 {
     public function index()
     {
-        $suscripciones = Suscripcion::with(['usuario', 'paquete.membresia'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $user = auth()->user();
+        $isCliente = $user->hasRole('Cliente');
+
+        $query = Suscripcion::with(['usuario', 'paquete.membresia']);
+
+        // Si es Cliente, solo ver sus suscripciones
+        if ($isCliente) {
+            $query->where('usuario_id', $user->id);
+        }
+
+        $suscripciones = $query->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Suscripciones/Index', [
             'suscripciones' => $suscripciones,
+            'isCliente' => $isCliente,
         ]);
     }
 

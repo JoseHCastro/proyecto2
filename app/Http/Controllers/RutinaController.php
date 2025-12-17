@@ -14,17 +14,27 @@ class RutinaController extends Controller
      */
     public function index(Request $request)
     {
+        $user = auth()->user();
+        $isCliente = $user->hasRole('Cliente');
+
         $query = Rutina::with(['socio', 'instructor']);
+
+        // Si es Cliente, solo ver sus rutinas asignadas
+        if ($isCliente) {
+            $query->where('socio_id', $user->id);
+        }
 
         if ($request->has('search')) {
             $search = $request->input('search');
-            $query->where('ejercicio', 'like', "%{$search}%")
-                ->orWhereHas('socio', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('instructor', function ($q) use ($search) {
-                    $q->where('name', 'like', "%{$search}%");
-                });
+            $query->where(function($q) use ($search) {
+                $q->where('ejercicio', 'like', "%{$search}%")
+                    ->orWhereHas('socio', function ($subQ) use ($search) {
+                        $subQ->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('instructor', function ($subQ) use ($search) {
+                        $subQ->where('name', 'like', "%{$search}%");
+                    });
+            });
         }
 
         $rutinas = $query->orderBy('creada_en', 'desc')->paginate(10)->withQueryString();
@@ -32,6 +42,7 @@ class RutinaController extends Controller
         return Inertia::render('Rutinas/Index', [
             'rutinas' => $rutinas,
             'filters' => $request->only(['search']),
+            'isCliente' => $isCliente,
         ]);
     }
 
