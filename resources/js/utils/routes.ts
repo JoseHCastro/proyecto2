@@ -1,6 +1,25 @@
 import { usePage } from '@inertiajs/vue3';
 
 /**
+ * Get the base path from APP_URL for subdirectory deployments
+ * Extracts just the path portion (e.g., "/inf513/grupo23sc/proyecto2")
+ */
+function getBasePath(): string {
+    const page = usePage();
+    const appUrl = (page.props.app_url as string) || '';
+    
+    if (!appUrl) return '';
+    
+    try {
+        const url = new URL(appUrl);
+        // Return the pathname, removing trailing slash
+        return url.pathname.replace(/\/$/, '');
+    } catch {
+        return '';
+    }
+}
+
+/**
  * Check if a URL is already absolute (starts with http:// or https://)
  */
 function isAbsoluteUrl(url: string): boolean {
@@ -9,32 +28,31 @@ function isAbsoluteUrl(url: string): boolean {
 
 /**
  * Get the full URL for a Wayfinder route
- * Prepends the APP_URL to handle subdirectory deployments
- * If the URL is already absolute, returns just the path portion
+ * Prepends the base path from APP_URL to handle subdirectory deployments
  */
 export function useRouteUrl(path: string): string {
     // If already absolute URL, extract just the path
     if (isAbsoluteUrl(path)) {
         try {
-            // Handle malformed URLs like "//http://..."
             const cleanedPath = path.replace(/^\/\//, '');
             const url = new URL(cleanedPath);
-            return url.pathname + url.search + url.hash;
+            // Return base path + the URL's path
+            return getBasePath() + url.pathname + url.search + url.hash;
         } catch {
-            // If URL parsing fails, return as-is
             return path;
         }
     }
     
-    // For relative paths, no need to prepend anything
-    // Wayfinder should generate paths starting with /
+    // For relative paths, prepend base path
+    const basePath = getBasePath();
     const cleanPath = path.startsWith('/') ? path : '/' + path;
-    return cleanPath;
+    
+    return basePath + cleanPath;
 }
 
 /**
  * Wrap a Wayfinder route function to normalize URLs
- * Ensures URLs are relative paths for proper subdirectory handling
+ * Ensures URLs include the correct base path for subdirectory deployments
  */
 export function wrapRoute<T extends (...args: any[]) => any>(
     routeFn: T
