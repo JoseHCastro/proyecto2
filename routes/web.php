@@ -22,9 +22,9 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/ingresos-por-paquete', [\App\Http\Controllers\DashboardController::class, 'ingresosPorPaquete'])->name('dashboard.ingresos');
+    Route::get('dashboard/suscripciones-por-paquete', [\App\Http\Controllers\DashboardController::class, 'suscripcionesPorPaquete'])->name('dashboard.suscripciones');
 
     Route::resource('users', \App\Http\Controllers\UserController::class);
     Route::resource('membresias', \App\Http\Controllers\MembresiaController::class);

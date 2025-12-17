@@ -49,7 +49,7 @@ class PagoFacilController extends Controller
         // Generar un ID único para la transacción
         $pedidoId = 'PED-' . time() . '-' . $user->id;
 
-        // Datos fijos según requerimiento (Monto de prueba 1.00 Bs)
+        // Monto de prueba 1.00 Bs
         $monto = 1.00;
         $telefono = '71199056'; // Teléfono fijo solicitado
 
