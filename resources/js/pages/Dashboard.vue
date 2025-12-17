@@ -318,6 +318,13 @@ const getPeriodoLabel = (periodo: string) => {
                                 <p>No hay datos de ingresos para este periodo</p>
                             </div>
                         </div>
+                        <!-- Total de Ingresos -->
+                        <div class="mt-4 pt-4 border-t border-border">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-muted-foreground">Total Ingresos:</span>
+                                <span class="text-lg font-bold text-primary">Bs {{ totalIngresos.toFixed(2) }}</span>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
 
@@ -358,6 +365,13 @@ const getPeriodoLabel = (periodo: string) => {
                             />
                             <div v-else-if="!loadingSuscripciones" class="flex items-center justify-center h-full text-muted-foreground">
                                 <p>No hay suscripciones para este periodo</p>
+                            </div>
+                        </div>
+                        <!-- Total de Suscripciones -->
+                        <div class="mt-4 pt-4 border-t border-border">
+                            <div class="flex items-center justify-between">
+                                <span class="text-sm font-medium text-muted-foreground">Total Suscripciones:</span>
+                                <span class="text-lg font-bold text-primary">{{ totalSuscripciones }}</span>
                             </div>
                         </div>
                     </CardContent>
