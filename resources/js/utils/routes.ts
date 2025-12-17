@@ -1,22 +1,40 @@
 import { usePage } from '@inertiajs/vue3';
 
 /**
- * Get the full URL for a Wayfinder route
- * Prepends the APP_URL to handle subdirectory deployments
+ * Check if a URL is already absolute (starts with http:// or https://)
  */
-export function useRouteUrl(path: string): string {
-    const page = usePage();
-    const appUrl = (page.props.app_url as string) || '';
-
-    // Remove trailing slash from appUrl and leading slash from path if both exist
-    const cleanAppUrl = appUrl.replace(/\/$/, '');
-    const cleanPath = path.startsWith('/') ? path : '/' + path;
-
-    return cleanAppUrl + cleanPath;
+function isAbsoluteUrl(url: string): boolean {
+    return /^(https?:)?\/\//.test(url);
 }
 
 /**
- * Wrap a Wayfinder route function to use full URLs
+ * Get the full URL for a Wayfinder route
+ * Prepends the APP_URL to handle subdirectory deployments
+ * If the URL is already absolute, returns just the path portion
+ */
+export function useRouteUrl(path: string): string {
+    // If already absolute URL, extract just the path
+    if (isAbsoluteUrl(path)) {
+        try {
+            // Handle malformed URLs like "//http://..."
+            const cleanedPath = path.replace(/^\/\//, '');
+            const url = new URL(cleanedPath);
+            return url.pathname + url.search + url.hash;
+        } catch {
+            // If URL parsing fails, return as-is
+            return path;
+        }
+    }
+    
+    // For relative paths, no need to prepend anything
+    // Wayfinder should generate paths starting with /
+    const cleanPath = path.startsWith('/') ? path : '/' + path;
+    return cleanPath;
+}
+
+/**
+ * Wrap a Wayfinder route function to normalize URLs
+ * Ensures URLs are relative paths for proper subdirectory handling
  */
 export function wrapRoute<T extends (...args: any[]) => any>(
     routeFn: T
