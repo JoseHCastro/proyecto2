@@ -124,7 +124,7 @@ const calcularDiasRestantes = (fechaFin) => {
                                 </CardDescription>
                             </div>
                             <Button as-child>
-                                <Link :href="suscripcionesEdit.url({ suscripcion: suscripcion.id })">
+                                <Link :href="suscripcionesEdit.url({ suscripcione: suscripcion.id })">
                                     <Pencil class="mr-2 h-4 w-4" />
                                     Editar
                                 </Link>

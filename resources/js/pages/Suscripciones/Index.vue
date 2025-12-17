@@ -22,7 +22,7 @@ const deleteSuscripcion = async (id) => {
     });
 
     if (result.isConfirmed) {
-        router.delete(suscripcionesDestroy.url({ suscripcion: id }), {
+        router.delete(suscripcionesDestroy.url({ suscripcione: id }), {
             onSuccess: () => {
                 successAlert({
                     title: '¡Eliminado!',
@@ -114,13 +114,13 @@ const getEstadoBadge = (estado) => {
                                         </TableCell>
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
-                                                <Button variant="ghost" size="sm" as-child>
-                                                    <Link :href="suscripcionesShow.url({ suscripcion: suscripcion.id })">
+                                                <Button v-if="suscripcion.id" variant="ghost" size="sm" as-child>
+                                                    <Link :href="suscripcionesShow.url({ suscripcione: suscripcion.id })">
                                                         <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
-                                                <Button variant="ghost" size="sm" as-child>
-                                                    <Link :href="suscripcionesEdit.url({ suscripcion: suscripcion.id })">
+                                                <Button v-if="suscripcion.id" variant="ghost" size="sm" as-child>
+                                                    <Link :href="suscripcionesEdit.url({ suscripcione: suscripcion.id })">
                                                         <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

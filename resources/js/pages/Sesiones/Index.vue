@@ -38,7 +38,7 @@ const deleteSesion = (id) => {
         icon: 'warning'
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(sesionesDestroy.url({ sesion: id }), {
+            router.delete(sesionesDestroy.url({ sesione: id }), {
                 onSuccess: () => {
                     successAlert({
                         title: '¡Eliminado!',
@@ -124,13 +124,13 @@ const diasSemana = {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="outline" size="sm" as-child title="Ver">
-                                                    <Link :href="sesionesShow.url({ sesion: sesion.id })">
-                                                    <Eye class="h-4 w-4" />
+                                                    <Link :href="sesionesShow.url({ sesione: sesion.id })">
+                                                        <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
-                                                    <Link :href="sesionesEdit.url({ sesion: sesion.id })">
-                                                    <Pencil class="h-4 w-4" />
+                                                    <Link :href="sesionesEdit.url({ sesione: sesion.id })">
+                                                        <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="destructive" size="sm" @click="deleteSesion(sesion.id)"

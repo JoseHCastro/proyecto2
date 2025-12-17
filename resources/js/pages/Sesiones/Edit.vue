@@ -21,7 +21,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(sesionesUpdate.url({ sesion: props.sesion.id }), {
+    form.put(sesionesUpdate.url({ sesione: props.sesion.id }), {
         onSuccess: () => {
             successAlert({
                 title: '¡Sesión actualizada!',

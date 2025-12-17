@@ -19,7 +19,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(suscripcionesUpdate.url({ suscripcion: props.suscripcion.id }), {
+    form.put(suscripcionesUpdate.url({ suscripcione: props.suscripcion.id }), {
         onSuccess: () => {
             successAlert({
                 title: '¡Actualizado!',
