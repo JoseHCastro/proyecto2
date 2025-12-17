@@ -6,11 +6,16 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { logout } from '@/routes';
-import { edit } from '@/routes/profile';
+import { logout as _logout } from '@/routes';
+import { edit as _edit } from '@/routes/profile';
+import { wrapRoute } from '@/utils/routes';
 import type { User } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { LogOut, Settings } from 'lucide-vue-next';
+
+// Wrap routes
+const logout = wrapRoute(_logout);
+const edit = wrapRoute(_edit);
 
 interface Props {
     user: User;

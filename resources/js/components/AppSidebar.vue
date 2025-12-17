@@ -27,6 +27,7 @@ import {
     ScanLine
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import { useRouteUrl } from '@/utils/routes';
 
 // Importaciones de rutas Wayfinder
 import { index as informacionIndex } from '@/routes/informacion';
@@ -45,70 +46,72 @@ import { registrar as asistenciasRegistrar } from '@/routes/asistencias';
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: useRouteUrl('/dashboard'),
         icon: LayoutGrid,
     },
     {
         title: 'Información',
-        href: informacionIndex.url(),
+        href: useRouteUrl(informacionIndex.url()),
         icon: Info,
     },
     {
         title: 'Usuarios',
-        href: usersIndex.url(),
+        href: useRouteUrl(usersIndex.url()),
         icon: Users,
     },
     {
         title: 'Membresías',
-        href: membresiasIndex.url(),
+        href: useRouteUrl(membresiasIndex.url()),
         icon: CreditCard,
     },
     {
         title: 'Horarios',
-        href: horariosIndex.url(),
+        href: useRouteUrl(horariosIndex.url()),
         icon: Clock,
     },
     {
         title: 'Disciplinas',
-        href: disciplinasIndex.url(),
+        href: useRouteUrl(disciplinasIndex.url()),
         icon: Dumbbell,
     },
     {
         title: 'Sesiones',
-        href: sesionesIndex.url(),
+        href: useRouteUrl(sesionesIndex.url()),
         icon: CalendarDays,
     },
     {
         title: 'Paquetes',
-        href: paquetesIndex.url(),
+        href: useRouteUrl(paquetesIndex.url()),
         icon: Package,
     },
     {
         title: 'Rutinas',
-        href: rutinasIndex.url(),
+        href: useRouteUrl(rutinasIndex.url()),
         icon: ClipboardList,
     },
     {
         title: 'Suscripciones',
-        href: suscripcionesIndex.url(),
+        href: useRouteUrl(suscripcionesIndex.url()),
         icon: FileCheck,
     },
     {
         title: 'Pagos QR',
-        href: pagosQrIndex.url(),
+        href: useRouteUrl(pagosQrIndex.url()),
         icon: QrCode,
     },
     {
         title: 'Mi QR',
-        href: miQr.url(),
+        href: useRouteUrl(miQr.url()),
         icon: QrCode,
     },
     {
         title: 'Registrar Asistencia',
-        href: asistenciasRegistrar.url(),
+        href: useRouteUrl(asistenciasRegistrar.url()),
         icon: ScanLine,
     },
 ];
+
+const dashboardUrl = useRouteUrl('/dashboard');
 </script>
 
 <template>
@@ -117,7 +120,7 @@ const mainNavItems: NavItem[] = [
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link href="/dashboard">
+                        <Link :href="dashboardUrl">
                         <AppLogo />
                         </Link>
                     </SidebarMenuButton>

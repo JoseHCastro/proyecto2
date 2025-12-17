@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { home } from '@/routes';
+import { getHomeUrl } from '@/utils/routes';
 import { Link } from '@inertiajs/vue3';
 import { Dumbbell } from 'lucide-vue-next';
 import AppFooter from '@/components/AppFooter.vue';
+import { computed } from 'vue';
+
+const homeUrl = computed(() => getHomeUrl());
 
 defineProps<{
     title?: string;
@@ -15,7 +18,7 @@ defineProps<{
         <div class="w-full max-w-sm">
             <div class="flex flex-col gap-8">
                 <div class="flex flex-col items-center gap-4">
-                    <Link :href="home()" class="flex flex-col items-center gap-2 font-medium">
+                    <Link :href="homeUrl" class="flex flex-col items-center gap-2 font-medium">
                     <div class="mb-1 flex h-16 w-16 items-center justify-center rounded-md">
                         <Dumbbell class="h-16 w-16 text-primary" />
                     </div>

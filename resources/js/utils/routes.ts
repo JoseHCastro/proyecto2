@@ -1,18 +1,23 @@
 import { usePage } from '@inertiajs/vue3';
+import { getBaseUrl } from './baseUrl';
 
 /**
  * Get the base path from APP_URL for subdirectory deployments
- * Extracts just the path portion (e.g., "/inf513/grupo23sc/proyecto2")
+ * First tries the global baseUrl, then falls back to app_url prop
  */
 export function getBasePath(): string {
-    const page = usePage();
-    const appUrl = (page.props.app_url as string) || '';
+    // First check if baseUrl is set globally (from app.ts)
+    const globalBase = getBaseUrl();
+    if (globalBase) return globalBase;
     
-    if (!appUrl) return '';
-    
+    // Fallback to app_url from page props
     try {
+        const page = usePage();
+        const appUrl = (page.props.app_url as string) || '';
+        
+        if (!appUrl) return '';
+        
         const url = new URL(appUrl);
-        // Return the pathname, removing trailing slash
         return url.pathname.replace(/\/$/, '');
     } catch {
         return '';
