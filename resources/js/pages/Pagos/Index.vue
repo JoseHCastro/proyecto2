@@ -5,10 +5,12 @@ import { ref, onMounted, onUnmounted } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { QrCode, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-vue-next';
+import { QrCode, RefreshCw, CheckCircle, XCircle, Clock, Download } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
 import axios from 'axios';
 import { generar as pagofacilGenerar, consultar as pagofacilConsultar } from '@/routes/pagofacil';
+import { descargar as recibosDescargar } from '@/routes/recibos';
+import { useRouteUrl } from '@/utils/routes';
 
 const props = defineProps({
     pagos: Array,
@@ -97,8 +99,34 @@ const getEstadoBadge = (estado) => {
         case 1: return { variant: 'secondary', label: 'Pendiente', icon: Clock };
         case 2: return { variant: 'default', label: 'Pagado', icon: CheckCircle };
         case 4: return { variant: 'destructive', label: 'Anulado', icon: XCircle };
-        case 5: return { variant: 'default', label: 'Pagada - Revisión', icon: CheckCircle }; // Cambiado a default (verde) y nuevo texto
+        case 5: return { variant: 'default', label: 'Pagada - Revisión', icon: CheckCircle };
         default: return { variant: 'outline', label: 'Desconocido', icon: Clock };
+    }
+};
+
+// Extraer pago_id del pedido_id si empieza con CUOTA-
+const getPagoIdFromPedido = (pedidoId) => {
+    if (pedidoId && pedidoId.startsWith('CUOTA-')) {
+        const parts = pedidoId.split('-');
+        if (parts.length >= 2) {
+            return parseInt(parts[1]);
+        }
+    }
+    return null;
+};
+
+// Verificar si el pago puede descargar recibo
+const puedeDescargarRecibo = (pago) => {
+    const estadoPagado = parseInt(pago.estado) === 2 || parseInt(pago.estado) === 5;
+    const tienePagoId = getPagoIdFromPedido(pago.pedido_id) !== null;
+    return estadoPagado && tienePagoId;
+};
+
+// Descargar recibo
+const descargarRecibo = (pago) => {
+    const pagoId = getPagoIdFromPedido(pago.pedido_id);
+    if (pagoId) {
+        window.open(useRouteUrl(recibosDescargar.url({ pago: pagoId })), '_blank');
     }
 };
 
@@ -218,12 +246,24 @@ onUnmounted(() => {
                                             </Button>
                                         </td>
                                         <td class="p-3 text-right">
-                                            <!-- Botón para consultar estado manualmente -->
-                                            <Button variant="ghost" size="sm" :disabled="loading"
-                                                @click="consultarEstado(pago)">
-                                                <RefreshCw class="h-4 w-4"
-                                                    :class="{ 'animate-spin': loading && pagoSeleccionadoId === pago.id }" />
-                                            </Button>
+                                            <div class="flex justify-end gap-1">
+                                                <!-- Botón descargar recibo si está pagado y es cuota -->
+                                                <Button 
+                                                    v-if="puedeDescargarRecibo(pago)" 
+                                                    variant="ghost" 
+                                                    size="sm"
+                                                    @click="descargarRecibo(pago)"
+                                                    title="Descargar Recibo PDF"
+                                                >
+                                                    <Download class="h-4 w-4" />
+                                                </Button>
+                                                <!-- Botón para consultar estado manualmente -->
+                                                <Button variant="ghost" size="sm" :disabled="loading"
+                                                    @click="consultarEstado(pago)">
+                                                    <RefreshCw class="h-4 w-4"
+                                                        :class="{ 'animate-spin': loading && pagoSeleccionadoId === pago.id }" />
+                                                </Button>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr v-if="pagos.length === 0">

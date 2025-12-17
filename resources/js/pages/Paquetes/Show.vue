@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +11,9 @@ import { index as paquetesIndex, edit as paquetesEdit } from '@/routes/paquetes'
 const props = defineProps({
     paquete: Object,
 });
+
+const page = usePage();
+const isCliente = computed(() => page.props.auth?.roles?.includes('Cliente'));
 
 const diasSemana = {
     1: 'Lunes',
@@ -129,7 +133,7 @@ const diasSemana = {
                                 </div>
                             </div>
 
-                            <div class="flex gap-4 pt-4">
+                            <div v-if="!isCliente" class="flex gap-4 pt-4">
                                 <Button as-child>
                                     <Link :href="paquetesEdit.url({ paquete: paquete.id })">
                                         Editar Paquete

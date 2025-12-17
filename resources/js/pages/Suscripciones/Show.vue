@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link, useForm, router } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Head, Link, useForm, router, usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,6 +17,9 @@ import { ver as recibosVer } from '@/routes/recibos';
 const props = defineProps({
     suscripcion: Object,
 });
+
+const page = usePage();
+const isCliente = computed(() => page.props.auth?.roles?.includes('Cliente'));
 
 const isDialogOpen = ref(false);
 const pagoSeleccionado = ref(null);
@@ -123,7 +126,7 @@ const calcularDiasRestantes = (fechaFin) => {
                                     </Badge>
                                 </CardDescription>
                             </div>
-                            <Button as-child>
+                            <Button v-if="!isCliente" as-child>
                                 <Link :href="suscripcionesEdit.url({ suscripcione: suscripcion.id })">
                                     <Pencil class="mr-2 h-4 w-4" />
                                     Editar

@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, User, Calendar, Dumbbell } from 'lucide-vue-next';
@@ -9,6 +10,9 @@ import { index as rutinasIndex, edit as rutinasEdit } from '@/routes/rutinas';
 const props = defineProps({
     rutina: Object,
 });
+
+const page = usePage();
+const isCliente = computed(() => page.props.auth?.roles?.includes('Cliente'));
 </script>
 
 <template>
@@ -93,7 +97,7 @@ const props = defineProps({
                                 }) }}</p>
                             </div>
 
-                            <div class="flex gap-4 pt-4">
+                            <div v-if="!isCliente" class="flex gap-4 pt-4">
                                 <Button as-child>
                                     <Link :href="rutinasEdit.url({ rutina: rutina.id })">
                                         Editar Rutina
