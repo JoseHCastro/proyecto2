@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 
 import { ArrowLeft } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as paquetesIndex, update as paquetesUpdate } from '@/routes/paquetes';
 
 const props = defineProps({
     paquete: Object,
@@ -52,7 +53,7 @@ const formatSesion = (sesion) => {
 
 const submit = () => {
     form.sesiones = sesionesSeleccionadas.value;
-    form.put(`/paquetes/${props.paquete.id}`, {
+    form.put(paquetesUpdate.url({ paquete: props.paquete.id }), {
         onSuccess: () => {
             successAlert({
                 title: '¡Actualizado!',
@@ -84,7 +85,7 @@ const submit = () => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/paquetes">
+                        <Link :href="paquetesIndex.url()">
                             <ArrowLeft class="h-4 w-4 mr-2" />
                             Volver
                         </Link>
@@ -199,7 +200,7 @@ const submit = () => {
                                     Actualizar Paquete
                                 </Button>
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/paquetes">
+                                    <Link :href="paquetesIndex.url()">
                                         Cancelar
                                     </Link>
                                 </Button>

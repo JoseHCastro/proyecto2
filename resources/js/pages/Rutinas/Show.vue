@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, User, Calendar, Dumbbell } from 'lucide-vue-next';
+import { index as rutinasIndex, edit as rutinasEdit } from '@/routes/rutinas';
 
 const props = defineProps({
     rutina: Object,
@@ -25,7 +26,7 @@ const props = defineProps({
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/rutinas">
+                        <Link :href="rutinasIndex.url()">
                             <ArrowLeft class="h-4 w-4 mr-2" />
                             Volver
                         </Link>
@@ -94,7 +95,7 @@ const props = defineProps({
 
                             <div class="flex gap-4 pt-4">
                                 <Button as-child>
-                                    <Link :href="`/rutinas/${rutina.id}/edit`">
+                                    <Link :href="rutinasEdit.url({ rutina: rutina.id })">
                                         Editar Rutina
                                     </Link>
                                 </Button>

@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as rutinasIndex, update as rutinasUpdate } from '@/routes/rutinas';
 
 const props = defineProps({
     rutina: Object,
@@ -24,7 +25,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/rutinas/${props.rutina.id}`, {
+    form.put(rutinasUpdate.url({ rutina: props.rutina.id }), {
         onSuccess: () => {
             successAlert({
                 title: '¡Actualizado!',
@@ -56,7 +57,7 @@ const submit = () => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/rutinas">
+                        <Link :href="rutinasIndex.url()">
                             <ArrowLeft class="h-4 w-4 mr-2" />
                             Volver
                         </Link>
@@ -157,7 +158,7 @@ const submit = () => {
                                     Actualizar Rutina
                                 </Button>
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/rutinas">
+                                    <Link :href="rutinasIndex.url()">
                                         Cancelar
                                     </Link>
                                 </Button>

@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft } from 'lucide-vue-next';
+import { index as disciplinasIndex, edit as disciplinasEdit } from '@/routes/disciplinas';
 
 const props = defineProps({
     disciplina: Object,
@@ -26,7 +27,7 @@ const props = defineProps({
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/disciplinas">
+                        <Link :href="disciplinasIndex.url()">
                         <ArrowLeft class="h-4 w-4 mr-2" />
                         Volver
                         </Link>
@@ -66,7 +67,7 @@ const props = defineProps({
 
                             <div class="flex gap-4 pt-4">
                                 <Button as-child>
-                                    <Link :href="`/disciplinas/${disciplina.id}/edit`">
+                                    <Link :href="disciplinasEdit.url({ disciplina: disciplina.id })">
                                         Editar Disciplina
                                     </Link>
                                 </Button>

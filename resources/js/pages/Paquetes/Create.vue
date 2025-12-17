@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as paquetesIndex, store as paquetesStore } from '@/routes/paquetes';
 
 const props = defineProps({
     membresias: Array,
@@ -49,7 +50,7 @@ const formatSesion = (sesion) => {
 
 const submit = () => {
     form.sesiones = sesionesSeleccionadas.value;
-    form.post('/paquetes', {
+    form.post(paquetesStore.url(), {
         onSuccess: () => {
             successAlert({
                 title: '¡Creado!',
@@ -81,7 +82,7 @@ const submit = () => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/paquetes">
+                        <Link :href="paquetesIndex.url()">
                             <ArrowLeft class="h-4 w-4 mr-2" />
                             Volver
                         </Link>
@@ -184,7 +185,7 @@ const submit = () => {
                                     Crear Paquete
                                 </Button>
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/paquetes">
+                                    <Link :href="paquetesIndex.url()">
                                         Cancelar
                                     </Link>
                                 </Button>

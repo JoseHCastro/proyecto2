@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Clock } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
 import { ref, computed } from 'vue';
+import { index as horariosIndex, update as horariosUpdate } from '@/routes/horarios';
 
 const props = defineProps({
     horario: Object,
@@ -59,13 +60,13 @@ const submit = () => {
     console.log('Form.dia_semana:', form.dia_semana);
     console.log('Form completo:', form.data());
     
-    form.put(`/horarios/${props.horario.id}`, {
+    form.put(horariosUpdate.url({ horario: props.horario.id }), {
         onSuccess: () => {
             successAlert({
                 title: '¡Horario actualizado!',
                 text: 'El horario ha sido actualizado correctamente'
             }).then(() => {
-                router.visit('/horarios');
+                router.visit(horariosIndex.url());
             });
         },
         onError: () => {
@@ -167,7 +168,7 @@ const submit = () => {
                             <!-- Botones -->
                             <div class="flex justify-end gap-4">
                                 <Button variant="outline" type="button" as-child>
-                                    <Link href="/horarios">Cancelar</Link>
+                                    <Link :href="horariosIndex.url()">Cancelar</Link>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">Actualizar</Button>
                             </div>

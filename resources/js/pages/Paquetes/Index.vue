@@ -17,6 +17,7 @@ import {
 
 import { Plus, Search, Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { confirmAlert, successAlert } from '@/composables/useSweetAlert';
+import { index as paquetesIndex, create as paquetesCreate, show as paquetesShow, edit as paquetesEdit, destroy as paquetesDestroy } from '@/routes/paquetes';
 
 const props = defineProps({
     paquetes: Object,
@@ -28,7 +29,7 @@ const search = ref(props.filters?.search || '');
 watch(
     search,
     debounce((value) => {
-        router.get('/paquetes', { search: value }, { preserveState: true });
+        router.get(paquetesIndex.url(), { search: value }, { preserveState: true });
     }, 300)
 );
 
@@ -41,7 +42,7 @@ const deletePaquete = async (id, nombre) => {
     });
 
     if (result.isConfirmed) {
-        router.delete(`/paquetes/${id}`, {
+        router.delete(paquetesDestroy.url({ paquete: id }), {
             onSuccess: () => {
                 successAlert({
                     title: '¡Eliminado!',
@@ -78,7 +79,7 @@ const deletePaquete = async (id, nombre) => {
                                 />
                             </div>
                             <Button as-child>
-                                <Link href="/paquetes/create">
+                                <Link :href="paquetesCreate.url()">
                                     <Plus class="mr-2 h-4 w-4" />
                                     Nuevo Paquete
                                 </Link>
@@ -125,12 +126,12 @@ const deletePaquete = async (id, nombre) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="ghost" size="icon" as-child>
-                                                    <Link :href="`/paquetes/${paquete.id}`">
+                                                    <Link :href="paquetesShow.url({ paquete: paquete.id })">
                                                         <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="ghost" size="icon" as-child>
-                                                    <Link :href="`/paquetes/${paquete.id}/edit`">
+                                                    <Link :href="paquetesEdit.url({ paquete: paquete.id })">
                                                         <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

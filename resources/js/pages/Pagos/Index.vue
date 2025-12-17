@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { QrCode, RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
 import axios from 'axios';
+import { generar as pagofacilGenerar, consultar as pagofacilConsultar } from '@/routes/pagofacil';
 
 const props = defineProps({
     pagos: Array,
@@ -20,7 +21,7 @@ const pollingInterval = ref(null);
 
 const generarQr = () => {
     loading.value = true;
-    router.post('/pagos/generar-qr', {}, {
+    router.post(pagofacilGenerar.url(), {}, {
         onSuccess: () => {
             console.log('QR Generado con éxito', page.props.flash?.qr_data);
             loading.value = false;
@@ -59,7 +60,7 @@ const consultarEstado = async (pago) => {
     loading.value = true;
 
     try {
-        const response = await axios.get(`/pagos/consultar/${pago.id}`);
+        const response = await axios.get(pagofacilConsultar.url({ id: pago.id }));
         const data = response.data;
 
         if (data.status === 'success') {

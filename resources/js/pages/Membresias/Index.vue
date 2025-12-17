@@ -2,6 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
+import { index as membresiasIndex, create as membresiasCreate, show as membresiasShow, edit as membresiasEdit, destroy as membresiasDestroy } from '@/routes/membresias';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
@@ -46,7 +47,7 @@ watch(search, (value) => {
         if (activo.value) {
             params.activo = activo.value;
         }
-        router.get('/membresias', params, { replace: true, preserveScroll: true });
+        router.get(membresiasIndex.url(), params, { replace: true, preserveScroll: true });
     }, 300);
 });
 
@@ -56,12 +57,10 @@ watch(activo, (value) => {
         params.search = search.value;
     }
     if (value) {
-        params.activo = value;
-    }
-    router.get('/membresias', params, { replace: true, preserveScroll: true });
-});
-
-const deleteMembresia = async (id) => {
+            params.activo = value;
+        }
+        router.get(membresiasIndex.url(), params, { replace: true, preserveScroll: true });
+    });const deleteMembresia = async (id) => {
     const result = await confirmAlert({
         title: '¿Eliminar membresía?',
         text: 'Esta acción no se puede deshacer',
@@ -70,7 +69,7 @@ const deleteMembresia = async (id) => {
     });
 
     if (result.isConfirmed) {
-        router.delete(`/membresias/${id}`, {
+        router.delete(membresiasDestroy.url({ membresia: id }), {
             onSuccess: () => {
                 successAlert({
                     title: '¡Eliminado!',
@@ -119,7 +118,7 @@ const deleteMembresia = async (id) => {
                                 </Select>
                             </div>
                             <Button as-child>
-                                <Link href="/membresias/create">
+                                <Link :href="membresiasCreate.url()">
                                 <Plus class="mr-2 h-4 w-4" />
                                 Nueva Membresía
                                 </Link>
@@ -150,12 +149,12 @@ const deleteMembresia = async (id) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="outline" size="sm" as-child title="Ver">
-                                                    <Link :href="`/membresias/${membresia.id}`">
+                                                    <Link :href="membresiasShow.url({ membresia: membresia.id })">
                                                     <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
-                                                    <Link :href="`/membresias/${membresia.id}/edit`">
+                                                    <Link :href="membresiasEdit.url({ membresia: membresia.id })">
                                                     <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

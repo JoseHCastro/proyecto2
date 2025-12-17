@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Pencil, ArrowLeft, Plus, Trash2, Scale, Ruler, Calendar, Clock } from 'lucide-vue-next';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as usersIndex, edit as usersEdit } from '@/routes/users';
 
 const props = defineProps({
     user: Object,
@@ -90,7 +91,7 @@ const calcularIMC = (peso, estatura) => {
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/users">
+                        <Link :href="usersIndex.url()">
                         <ArrowLeft class="mr-2 h-4 w-4" />
                         Volver a la lista
                         </Link>
@@ -106,7 +107,7 @@ const calcularIMC = (peso, estatura) => {
                             </div>
                             <!-- Botón Editar en la esquina de la tarjeta -->
                             <Button as-child>
-                                <Link :href="`/users/${user.id}/edit`">
+                                <Link :href="usersEdit.url({ user: user.id })">
                                 <Pencil class="mr-2 h-4 w-4" />
                                 Editar
                                 </Link>

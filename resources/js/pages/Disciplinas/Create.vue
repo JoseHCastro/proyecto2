@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as disciplinasIndex, store as disciplinasStore } from '@/routes/disciplinas';
 
 const form = useForm({
     nombre: '',
@@ -13,13 +14,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post('/disciplinas', {
+    form.post(disciplinasStore.url(), {
         onSuccess: () => {
             successAlert({
                 title: '¡Disciplina creada!',
                 text: 'La disciplina ha sido creada correctamente'
             }).then(() => {
-                router.visit('/disciplinas');
+                router.visit(disciplinasIndex.url());
             });
         },
         onError: () => {
@@ -77,7 +78,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-4">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/disciplinas">
+                                    <Link :href="disciplinasIndex.url()">
                                         Cancelar
                                     </Link>
                                 </Button>

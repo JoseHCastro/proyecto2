@@ -4,6 +4,8 @@ import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { ArrowLeft, Download, Building2, MapPin, Phone, Mail } from 'lucide-vue-next';
+import { descargar as recibosDescargar } from '@/routes/recibos';
+import { show as suscripcionesShow } from '@/routes/suscripciones';
 
 const props = defineProps({
     pago: Object,
@@ -11,7 +13,7 @@ const props = defineProps({
 });
 
 const descargarPDF = () => {
-    window.open(`/recibos/${props.pago.id}/descargar`, '_blank');
+    window.open(recibosDescargar.url({ pago: props.pago.id }), '_blank');
 };
 
 const imprimir = () => {
@@ -33,7 +35,7 @@ const imprimir = () => {
             <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
                 <div class="mb-4 flex gap-2">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link :href="`/suscripciones/${pago.suscripcion_id}`">
+                        <Link :href="suscripcionesShow.url({ suscripcione: pago.suscripcion_id })">
                             <ArrowLeft class="mr-2 h-4 w-4" />
                             Volver
                         </Link>

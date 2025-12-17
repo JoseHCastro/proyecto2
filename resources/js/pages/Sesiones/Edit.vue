@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as sesionesIndex, update as sesionesUpdate } from '@/routes/sesiones';
 
 const props = defineProps({
     sesion: Object,
@@ -20,13 +21,13 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/sesiones/${props.sesion.id}`, {
+    form.put(sesionesUpdate.url({ sesion: props.sesion.id }), {
         onSuccess: () => {
             successAlert({
                 title: '¡Sesión actualizada!',
                 text: 'La sesión ha sido actualizada correctamente'
             }).then(() => {
-                router.visit('/sesiones');
+                router.visit(sesionesIndex.url());
             });
         },
         onError: () => {
@@ -124,7 +125,7 @@ const formatHorario = (horario) => {
 
                             <div class="flex justify-end gap-4">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/sesiones">
+                                    <Link :href="sesionesIndex.url()">
                                         Cancelar
                                     </Link>
                                 </Button>

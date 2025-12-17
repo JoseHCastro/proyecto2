@@ -15,6 +15,7 @@ import {
 import { Eye, Pencil, Trash2, Plus, Clock } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as sesionesIndex, create as sesionesCreate, show as sesionesShow, edit as sesionesEdit, destroy as sesionesDestroy } from '@/routes/sesiones';
 
 const props = defineProps({
     sesiones: Object,
@@ -24,7 +25,7 @@ const props = defineProps({
 const search = ref(props.filters.search || '');
 
 watch(search, (value) => {
-    router.get('/sesiones', { search: value }, {
+    router.get(sesionesIndex.url(), { search: value }, {
         preserveState: true,
         replace: true,
     });
@@ -37,7 +38,7 @@ const deleteSesion = (id) => {
         icon: 'warning'
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(`/sesiones/${id}`, {
+            router.delete(sesionesDestroy.url({ sesion: id }), {
                 onSuccess: () => {
                     successAlert({
                         title: '¡Eliminado!',
@@ -86,7 +87,7 @@ const diasSemana = {
                                     class="w-full md:w-64" />
                             </div>
                             <Button as-child>
-                                <Link href="/sesiones/create">
+                                <Link :href="sesionesCreate.url()">
                                 <Plus class="mr-2 h-4 w-4" />
                                 Nueva Sesión
                                 </Link>
@@ -123,12 +124,12 @@ const diasSemana = {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="outline" size="sm" as-child title="Ver">
-                                                    <Link :href="`/sesiones/${sesion.id}`">
+                                                    <Link :href="sesionesShow.url({ sesion: sesion.id })">
                                                     <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
-                                                    <Link :href="`/sesiones/${sesion.id}/edit`">
+                                                    <Link :href="sesionesEdit.url({ sesion: sesion.id })">
                                                     <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

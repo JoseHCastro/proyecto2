@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pencil, Building2, MapPin, Phone, Mail } from 'lucide-vue-next';
+import { edit as informacionEdit } from '@/routes/informacion';
 
 const props = defineProps({
     informacion: Object,
@@ -30,7 +31,7 @@ const props = defineProps({
                                 <CardDescription class="mt-1">Información de contacto y ubicación</CardDescription>
                             </div>
                             <Button as-child>
-                                <Link href="/informacion/edit">
+                                <Link :href="informacionEdit.url()">
                                     <Pencil class="mr-2 h-4 w-4" />
                                     Editar
                                 </Link>

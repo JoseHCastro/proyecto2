@@ -28,6 +28,20 @@ import {
 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
+// Importaciones de rutas Wayfinder
+import { index as informacionIndex } from '@/routes/informacion';
+import { index as usersIndex } from '@/routes/users';
+import { index as membresiasIndex } from '@/routes/membresias';
+import { index as horariosIndex } from '@/routes/horarios';
+import { index as disciplinasIndex } from '@/routes/disciplinas';
+import { index as sesionesIndex } from '@/routes/sesiones';
+import { index as paquetesIndex } from '@/routes/paquetes';
+import { index as rutinasIndex } from '@/routes/rutinas';
+import { index as suscripcionesIndex } from '@/routes/suscripciones';
+import { index as pagosQrIndex } from '@/routes/pagofacil';
+import { miQr } from '@/routes/qr';
+import { registrar as asistenciasRegistrar } from '@/routes/asistencias';
+
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
@@ -36,62 +50,62 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Información',
-        href: '/informacion',
+        href: informacionIndex.url(),
         icon: Info,
     },
     {
         title: 'Usuarios',
-        href: '/users',
+        href: usersIndex.url(),
         icon: Users,
     },
     {
         title: 'Membresías',
-        href: '/membresias',
+        href: membresiasIndex.url(),
         icon: CreditCard,
     },
     {
         title: 'Horarios',
-        href: '/horarios',
+        href: horariosIndex.url(),
         icon: Clock,
     },
     {
         title: 'Disciplinas',
-        href: '/disciplinas',
+        href: disciplinasIndex.url(),
         icon: Dumbbell,
     },
     {
         title: 'Sesiones',
-        href: '/sesiones',
+        href: sesionesIndex.url(),
         icon: CalendarDays,
     },
     {
         title: 'Paquetes',
-        href: '/paquetes',
+        href: paquetesIndex.url(),
         icon: Package,
     },
     {
         title: 'Rutinas',
-        href: '/rutinas',
+        href: rutinasIndex.url(),
         icon: ClipboardList,
     },
     {
         title: 'Suscripciones',
-        href: '/suscripciones',
+        href: suscripcionesIndex.url(),
         icon: FileCheck,
     },
     {
         title: 'Pagos QR',
-        href: '/pagos/qr',
+        href: pagosQrIndex.url(),
         icon: QrCode,
     },
     {
         title: 'Mi QR',
-        href: '/mi-qr',
+        href: miQr.url(),
         icon: QrCode,
     },
     {
         title: 'Registrar Asistencia',
-        href: '/asistencias/registrar',
+        href: asistenciasRegistrar.url(),
         icon: ScanLine,
     },
 ];

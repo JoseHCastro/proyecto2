@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pencil, ArrowLeft, Clock, Calendar } from 'lucide-vue-next';
+import { index as horariosIndex, edit as horariosEdit } from '@/routes/horarios';
 
 const props = defineProps({
     horario: Object,
@@ -36,7 +37,7 @@ const diasSemana = {
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/horarios">
+                        <Link :href="horariosIndex.url()">
                         <ArrowLeft class="mr-2 h-4 w-4" />
                         Volver a la lista
                         </Link>
@@ -57,7 +58,7 @@ const diasSemana = {
                             </div>
                             <!-- Botón Editar en la esquina de la tarjeta -->
                             <Button as-child>
-                                <Link :href="`/horarios/${horario.id}/edit`">
+                                <Link :href="horariosEdit.url({ horario: horario.id })">
                                 <Pencil class="mr-2 h-4 w-4" />
                                 Editar
                                 </Link>

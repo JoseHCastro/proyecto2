@@ -11,6 +11,8 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft, Pencil, CalendarDays, CreditCard, User, Package, DollarSign, Eye } from 'lucide-vue-next';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as suscripcionesIndex, edit as suscripcionesEdit } from '@/routes/suscripciones';
+import { ver as recibosVer } from '@/routes/recibos';
 
 const props = defineProps({
     suscripcion: Object,
@@ -102,7 +104,7 @@ const calcularDiasRestantes = (fechaFin) => {
             <div class="mx-auto max-w-6xl sm:px-6 lg:px-8 space-y-6">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/suscripciones">
+                        <Link :href="suscripcionesIndex.url()">
                             <ArrowLeft class="mr-2 h-4 w-4" />
                             Volver al listado
                         </Link>
@@ -122,7 +124,7 @@ const calcularDiasRestantes = (fechaFin) => {
                                 </CardDescription>
                             </div>
                             <Button as-child>
-                                <Link :href="`/suscripciones/${suscripcion.id}/edit`">
+                                <Link :href="suscripcionesEdit.url({ suscripcion: suscripcion.id })">
                                     <Pencil class="mr-2 h-4 w-4" />
                                     Editar
                                 </Link>
@@ -251,7 +253,7 @@ const calcularDiasRestantes = (fechaFin) => {
                                                     size="sm"
                                                     as-child
                                                 >
-                                                    <Link :href="`/recibos/${pago.id}`" target="_blank">
+                                                    <Link :href="recibosVer.url({ pago: pago.id })" target="_blank">
                                                         <Eye class="h-4 w-4 mr-1" />
                                                         Ver Recibo
                                                     </Link>

@@ -14,6 +14,7 @@ import {
 import { Eye, Pencil, Trash2, Plus } from 'lucide-vue-next';
 import { ref, watch } from 'vue';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as disciplinasIndex, create as disciplinasCreate, show as disciplinasShow, edit as disciplinasEdit, destroy as disciplinasDestroy } from '@/routes/disciplinas';
 
 const props = defineProps({
     disciplinas: Object,
@@ -23,7 +24,7 @@ const props = defineProps({
 const search = ref(props.filters.search || '');
 
 watch(search, (value) => {
-    router.get('/disciplinas', { search: value }, {
+    router.get(disciplinasIndex.url(), { search: value }, {
         preserveState: true,
         replace: true,
     });
@@ -36,7 +37,7 @@ const deleteDisciplina = (id) => {
         icon: 'warning'
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(`/disciplinas/${id}`, {
+            router.delete(disciplinasDestroy.url({ disciplina: id }), {
                 onSuccess: () => {
                     successAlert({
                         title: '¡Eliminado!',
@@ -76,7 +77,7 @@ const deleteDisciplina = (id) => {
                                     class="w-full md:w-64" />
                             </div>
                             <Button as-child>
-                                <Link href="/disciplinas/create">
+                                <Link :href="disciplinasCreate.url()">
                                 <Plus class="mr-2 h-4 w-4" />
                                 Nueva Disciplina
                                 </Link>
@@ -99,12 +100,12 @@ const deleteDisciplina = (id) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="outline" size="sm" as-child title="Ver">
-                                                    <Link :href="`/disciplinas/${disciplina.id}`">
+                                                    <Link :href="disciplinasShow.url({ disciplina: disciplina.id })">
                                                     <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
-                                                    <Link :href="`/disciplinas/${disciplina.id}/edit`">
+                                                    <Link :href="disciplinasEdit.url({ disciplina: disciplina.id })">
                                                     <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

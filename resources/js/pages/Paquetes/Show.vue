@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, DollarSign, Calendar } from 'lucide-vue-next';
+import { index as paquetesIndex, edit as paquetesEdit } from '@/routes/paquetes';
 
 const props = defineProps({
     paquete: Object,
@@ -35,7 +36,7 @@ const diasSemana = {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/paquetes">
+                        <Link :href="paquetesIndex.url()">
                             <ArrowLeft class="h-4 w-4 mr-2" />
                             Volver
                         </Link>
@@ -130,7 +131,7 @@ const diasSemana = {
 
                             <div class="flex gap-4 pt-4">
                                 <Button as-child>
-                                    <Link :href="`/paquetes/${paquete.id}/edit`">
+                                    <Link :href="paquetesEdit.url({ paquete: paquete.id })">
                                         Editar Paquete
                                     </Link>
                                 </Button>

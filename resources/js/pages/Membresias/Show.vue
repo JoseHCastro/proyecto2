@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pencil, ArrowLeft } from 'lucide-vue-next';
+import { index as membresiasIndex, edit as membresiasEdit } from '@/routes/membresias';
 
 const props = defineProps({
     membresia: Object,
@@ -27,7 +28,7 @@ const props = defineProps({
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/membresias">
+                        <Link :href="membresiasIndex.url()">
                         <ArrowLeft class="mr-2 h-4 w-4" />
                         Volver a la lista
                         </Link>
@@ -45,7 +46,7 @@ const props = defineProps({
                             </div>
                             <!-- Botón Editar en la esquina de la tarjeta -->
                             <Button as-child>
-                                <Link :href="`/membresias/${membresia.id}/edit`">
+                                <Link :href="membresiasEdit.url({ membresia: membresia.id })">
                                 <Pencil class="mr-2 h-4 w-4" />
                                 Editar
                                 </Link>

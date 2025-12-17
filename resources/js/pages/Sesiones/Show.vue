@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Clock, User } from 'lucide-vue-next';
+import { index as sesionesIndex, edit as sesionesEdit } from '@/routes/sesiones';
 
 const props = defineProps({
     sesion: Object,
@@ -36,7 +37,7 @@ const diasSemana = {
                 <!-- Botón Volver arriba -->
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/sesiones">
+                        <Link :href="sesionesIndex.url()">
                         <ArrowLeft class="h-4 w-4 mr-2" />
                         Volver
                         </Link>
@@ -111,7 +112,7 @@ const diasSemana = {
 
                             <div class="flex gap-4 pt-4">
                                 <Button as-child>
-                                    <Link :href="`/sesiones/${sesion.id}/edit`">
+                                    <Link :href="sesionesEdit.url({ sesione: sesion.id })">
                                         Editar Sesión
                                     </Link>
                                 </Button>

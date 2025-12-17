@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowLeft } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as suscripcionesIndex, update as suscripcionesUpdate } from '@/routes/suscripciones';
 
 const props = defineProps({
     suscripcion: Object,
@@ -18,7 +19,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.put(`/suscripciones/${props.suscripcion.id}`, {
+    form.put(suscripcionesUpdate.url({ suscripcion: props.suscripcion.id }), {
         onSuccess: () => {
             successAlert({
                 title: '¡Actualizado!',
@@ -49,7 +50,7 @@ const submit = () => {
             <div class="mx-auto max-w-4xl sm:px-6 lg:px-8">
                 <div class="mb-4">
                     <Button variant="ghost" size="sm" as-child>
-                        <Link href="/suscripciones">
+                        <Link :href="suscripcionesIndex.url()">
                             <ArrowLeft class="mr-2 h-4 w-4" />
                             Volver al listado
                         </Link>
@@ -123,7 +124,7 @@ const submit = () => {
 
                             <div class="flex justify-end gap-3">
                                 <Button type="button" variant="outline" as-child>
-                                    <Link href="/suscripciones">Cancelar</Link>
+                                    <Link :href="suscripcionesIndex.url()">Cancelar</Link>
                                 </Button>
                                 <Button type="submit" :disabled="form.processing">
                                     {{ form.processing ? 'Guardando...' : 'Guardar Cambios' }}

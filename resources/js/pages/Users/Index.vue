@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as usersIndex, create as usersCreate, show as usersShow, edit as usersEdit, destroy as usersDestroy } from '@/routes/users';
 
 const props = defineProps({
     users: Object,
@@ -46,7 +47,7 @@ watch(search, (value) => {
         if (role.value) {
             params.role = role.value;
         }
-        router.get('/users', params, { replace: true, preserveScroll: true });
+        router.get(usersIndex.url(), params, { replace: true, preserveScroll: true });
     }, 300);
 });
 
@@ -58,7 +59,7 @@ watch(role, (value) => {
     if (value) {
         params.role = value;
     }
-    router.get('/users', params, { replace: true, preserveScroll: true });
+    router.get(usersIndex.url(), params, { replace: true, preserveScroll: true });
 });
 
 const deleteUser = async (id) => {
@@ -70,7 +71,7 @@ const deleteUser = async (id) => {
     });
 
     if (result.isConfirmed) {
-        router.delete(`/users/${id}`, {
+        router.delete(usersDestroy.url({ user: id }), {
             onSuccess: () => {
                 successAlert({
                     title: '¡Eliminado!',
@@ -119,7 +120,7 @@ const deleteUser = async (id) => {
                                 </Select>
                             </div>
                             <Button as-child>
-                                <Link href="/users/create">
+                                <Link :href="usersCreate.url()">
                                 <UserPlus class="mr-2 h-4 w-4" />
                                 Nuevo Usuario
                                 </Link>
@@ -155,12 +156,12 @@ const deleteUser = async (id) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="outline" size="sm" as-child title="Ver">
-                                                    <Link :href="`/users/${user.id}`">
+                                                    <Link :href="usersShow.url({ user: user.id })">
                                                     <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
-                                                    <Link :href="`/users/${user.id}/edit`">
+                                                    <Link :href="usersEdit.url({ user: user.id })">
                                                     <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

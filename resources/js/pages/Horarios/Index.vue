@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { confirmAlert, successAlert, errorAlert } from '@/composables/useSweetAlert';
+import { index as horariosIndex, create as horariosCreate, show as horariosShow, edit as horariosEdit, destroy as horariosDestroy } from '@/routes/horarios';
 
 const props = defineProps({
     horarios: Object,
@@ -35,7 +36,7 @@ watch(search, (value) => {
         if (value) {
             params.search = value;
         }
-        router.get('/horarios', params, { replace: true, preserveScroll: true });
+        router.get(horariosIndex.url(), params, { replace: true, preserveScroll: true });
     }, 300);
 });
 
@@ -62,7 +63,7 @@ const deleteHorario = async (id) => {
     });
 
     if (result.isConfirmed) {
-        router.delete(`/horarios/${id}`, {
+        router.delete(horariosDestroy.url({ horario: id }), {
             onSuccess: () => {
                 successAlert({
                     title: '¡Eliminado!',
@@ -101,7 +102,7 @@ const deleteHorario = async (id) => {
                                     class="w-full md:w-64" />
                             </div>
                             <Button as-child>
-                                <Link href="/horarios/create">
+                                <Link :href="horariosCreate.url()">
                                 <Plus class="mr-2 h-4 w-4" />
                                 Nuevo Horario
                                 </Link>
@@ -142,12 +143,12 @@ const deleteHorario = async (id) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="outline" size="sm" as-child title="Ver">
-                                                    <Link :href="`/horarios/${horario.id}`">
+                                                    <Link :href="horariosShow.url({ horario: horario.id })">
                                                     <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="outline" size="sm" as-child title="Editar">
-                                                    <Link :href="`/horarios/${horario.id}/edit`">
+                                                    <Link :href="horariosEdit.url({ horario: horario.id })">
                                                     <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

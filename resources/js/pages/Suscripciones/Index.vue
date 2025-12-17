@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { confirmAlert, successAlert } from '@/composables/useSweetAlert';
+import { index as suscripcionesIndex, create as suscripcionesCreate, show as suscripcionesShow, edit as suscripcionesEdit, destroy as suscripcionesDestroy } from '@/routes/suscripciones';
 
 const props = defineProps({
     suscripciones: Array,
@@ -21,7 +22,7 @@ const deleteSuscripcion = async (id) => {
     });
 
     if (result.isConfirmed) {
-        router.delete(`/suscripciones/${id}`, {
+        router.delete(suscripcionesDestroy.url({ suscripcion: id }), {
             onSuccess: () => {
                 successAlert({
                     title: '¡Eliminado!',
@@ -58,7 +59,7 @@ const getEstadoBadge = (estado) => {
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="mb-4 flex justify-end">
                     <Button as-child>
-                        <Link href="/suscripciones/create">
+                        <Link :href="suscripcionesCreate.url()">
                             <Plus class="mr-2 h-4 w-4" />
                             Nueva Suscripción
                         </Link>
@@ -114,12 +115,12 @@ const getEstadoBadge = (estado) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="ghost" size="sm" as-child>
-                                                    <Link :href="`/suscripciones/${suscripcion.id}`">
+                                                    <Link :href="suscripcionesShow.url({ suscripcion: suscripcion.id })">
                                                         <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="ghost" size="sm" as-child>
-                                                    <Link :href="`/suscripciones/${suscripcion.id}/edit`">
+                                                    <Link :href="suscripcionesEdit.url({ suscripcion: suscripcion.id })">
                                                         <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>

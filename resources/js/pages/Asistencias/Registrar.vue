@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Camera, Mail, CheckCircle, XCircle, AlertCircle } from 'lucide-vue-next';
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
 import { Html5Qrcode } from 'html5-qrcode';
+import { store as asistenciasStore } from '@/routes/asistencias';
 
 const videoRef = ref(null);
 const scannerRef = ref(null);
@@ -95,7 +96,7 @@ const registrarAsistencia = async (email) => {
     try {
         console.log('Registrando asistencia para:', email);
         
-        const response = await fetch('/asistencias/registrar', {
+        const response = await fetch(asistenciasStore.url(), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

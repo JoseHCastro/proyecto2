@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/table';
 import { Plus, Search, Eye, Pencil, Trash2 } from 'lucide-vue-next';
 import { confirmAlert, successAlert } from '@/composables/useSweetAlert';
+import { index as rutinasIndex, create as rutinasCreate, show as rutinasShow, edit as rutinasEdit, destroy as rutinasDestroy } from '@/routes/rutinas';
 
 const props = defineProps({
     rutinas: Object,
@@ -26,7 +27,7 @@ const search = ref(props.filters?.search || '');
 watch(
     search,
     debounce((value) => {
-        router.get('/rutinas', { search: value }, { preserveState: true });
+        router.get(rutinasIndex.url(), { search: value }, { preserveState: true });
     }, 300)
 );
 
@@ -39,7 +40,7 @@ const deleteRutina = async (id, ejercicio) => {
     });
 
     if (result.isConfirmed) {
-        router.delete(`/rutinas/${id}`, {
+        router.delete(rutinasDestroy.url({ rutina: id }), {
             onSuccess: () => {
                 successAlert({
                     title: '¡Eliminado!',
@@ -76,7 +77,7 @@ const deleteRutina = async (id, ejercicio) => {
                                 />
                             </div>
                             <Button as-child>
-                                <Link href="/rutinas/create">
+                                <Link :href="rutinasCreate.url()">
                                     <Plus class="mr-2 h-4 w-4" />
                                     Nueva Rutina
                                 </Link>
@@ -112,12 +113,12 @@ const deleteRutina = async (id, ejercicio) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button variant="ghost" size="icon" as-child>
-                                                    <Link :href="`/rutinas/${rutina.id}`">
+                                                    <Link :href="rutinasShow.url({ rutina: rutina.id })">
                                                         <Eye class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
                                                 <Button variant="ghost" size="icon" as-child>
-                                                    <Link :href="`/rutinas/${rutina.id}/edit`">
+                                                    <Link :href="rutinasEdit.url({ rutina: rutina.id })">
                                                         <Pencil class="h-4 w-4" />
                                                     </Link>
                                                 </Button>
