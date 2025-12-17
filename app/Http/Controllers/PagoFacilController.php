@@ -65,7 +65,7 @@ class PagoFacilController extends Controller
             "amount" => $monto,
             "currency" => 2, // 1=USD, 2=BOB (Bolivianos)
             "clientCode" => (string) ($user->id ?? '0'),
-            "callbackUrl" => "https://www.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/payment/callback",
+            "callbackUrl" => "http://mail.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/public/payment/callback",
             "orderDetail" => [
                 [
                     "serial" => 1,
@@ -128,7 +128,7 @@ class PagoFacilController extends Controller
             "amount" => $monto,
             "currency" => 2, // BOB
             "clientCode" => (string) $user->id,
-            "callbackUrl" => "https://www.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/payment/callback",
+            "callbackUrl" => "http://mail.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/public/payment/callback",
             "orderDetail" => [
                 [
                     "serial" => 1,
@@ -174,70 +174,93 @@ class PagoFacilController extends Controller
         Log::info('PagoFácil Callback recibido', $request->all());
 
         try {
+            // Obtener todos los parámetros que envía PagoFácil
             $pedidoId = $request->input('PedidoID');
-            $estado = $request->input('Estado'); // "2" es Pagado
+            $fecha = $request->input('Fecha');
+            $hora = $request->input('Hora');
+            $estado = $request->input('Estado'); // 2=Pagado, 4=Anulado, 5=Revisión
+            $metodoPago = $request->input('MetodoPago');
+
+            Log::info('Callback datos parseados', [
+                'PedidoID' => $pedidoId,
+                'Estado' => $estado,
+                'Fecha' => $fecha,
+                'Hora' => $hora,
+                'MetodoPago' => $metodoPago
+            ]);
 
             // Buscar la transacción
             $pagoFacil = PagoFacil::where('pedido_id', $pedidoId)->first();
 
-            if ($pagoFacil) {
-                $nuevoEstado = $pagoFacil->estado;
+            if (!$pagoFacil) {
+                Log::warning('Callback: Pedido no encontrado', ['PedidoID' => $pedidoId]);
+                return response()->json([
+                    "error" => 1,
+                    "status" => 0,
+                    "message" => "Pedido no encontrado",
+                    "messageMostrar" => 0,
+                    "messageSistema" => "",
+                    "values" => false
+                ], 200); // PagoFácil espera 200 siempre
+            }
 
-                if ($estado == 2) {
-                    $nuevoEstado = 2; // Pagado
-                    $pagoFacil->fecha_pago = now();
-                } elseif ($estado == 4) {
-                    $nuevoEstado = 4; // Anulado
-                } elseif ($estado == 5) {
-                    $nuevoEstado = 5; // Revisión (Considerado pagado para el negocio)
-                    $pagoFacil->fecha_pago = now(); // Asignamos fecha pago también
-                }
+            $nuevoEstado = $pagoFacil->estado;
 
-                $pagoFacil->estado = $nuevoEstado;
-                $pagoFacil->save();
+            if ($estado == 2) {
+                $nuevoEstado = 2; // Pagado
+                $pagoFacil->fecha_pago = now();
+            } elseif ($estado == 4) {
+                $nuevoEstado = 4; // Anulado
+            } elseif ($estado == 5) {
+                $nuevoEstado = 5; // Revisión (Considerado pagado para el negocio)
+                $pagoFacil->fecha_pago = now();
+            }
 
-                // Lógica adicional: Si es el pago de una cuota, actualizar el modelo Pago
-                // Se actualiza si es Pagado (2) o Revisión (5)
-                if (($nuevoEstado == 2 || $nuevoEstado == 5) && str_starts_with($pagoFacil->pedido_id, 'CUOTA-')) {
-                    // Extraer ID del pago: CUOTA-{id}-{timestamp}
-                    $parts = explode('-', $pagoFacil->pedido_id);
-                    if (isset($parts[1])) {
-                        $pagoId = $parts[1];
-                        $pagoCuota = Pago::find($pagoId);
-                        if ($pagoCuota) {
-                            $pagoCuota->update([
-                                'estado' => 'pagada',
-                                'metodo' => 'QR',
-                                'fecha' => now(),
-                            ]);
-                            Log::info("Cuota #{$pagoId} marcada como pagada vía QR (Estado: {$nuevoEstado}).");
-                        }
+            $pagoFacil->estado = $nuevoEstado;
+            $pagoFacil->save();
+
+            Log::info('PagoFacil actualizado', ['id' => $pagoFacil->id, 'nuevoEstado' => $nuevoEstado]);
+
+            // Lógica de negocio: Si es pago de una cuota, actualizar el modelo Pago
+            // Se actualiza si es Pagado (2) o Revisión (5)
+            if (($nuevoEstado == 2 || $nuevoEstado == 5) && str_starts_with($pagoFacil->pedido_id, 'CUOTA-')) {
+                // Extraer ID del pago: CUOTA-{id}-{timestamp}
+                $parts = explode('-', $pagoFacil->pedido_id);
+                if (isset($parts[1])) {
+                    $pagoId = $parts[1];
+                    $pagoCuota = Pago::find($pagoId);
+                    if ($pagoCuota) {
+                        $pagoCuota->update([
+                            'estado' => 'pagada',
+                            'metodo' => 'QR',
+                            'fecha' => now(),
+                        ]);
+                        Log::info("Cuota #{$pagoId} marcada como pagada vía QR (Estado: {$nuevoEstado}).");
                     }
                 }
-
-                return response()->json([
-                    "error" => 0,
-                    "status" => 1,
-                    "message" => "Estado actualizado correctamente",
-                    "values" => true
-                ]);
             }
 
             return response()->json([
-                "error" => 1,
-                "status" => 0,
-                "message" => "Pedido no encontrado",
-                "values" => false
-            ], 404);
+                "error" => 0,
+                "status" => 1,
+                "message" => "Pago procesado correctamente",
+                "messageMostrar" => 0,
+                "messageSistema" => "",
+                "values" => true
+            ], 200);
 
         } catch (\Exception $e) {
-            Log::error('Error en Callback: ' . $e->getMessage());
+            Log::error('Error en Callback: ' . $e->getMessage(), [
+                'stack' => $e->getTraceAsString()
+            ]);
             return response()->json([
                 "error" => 1,
                 "status" => 0,
-                "message" => "Error interno",
+                "message" => "Ocurrió un error al procesar la transacción",
+                "messageMostrar" => 0,
+                "messageSistema" => $e->getMessage(),
                 "values" => false
-            ], 500);
+            ], 200); // PagoFácil espera 200 siempre
         }
     }
 
