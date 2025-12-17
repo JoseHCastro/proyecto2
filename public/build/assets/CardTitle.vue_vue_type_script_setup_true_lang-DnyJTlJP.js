@@ -1,1 +1,0 @@
-import{b as o}from"./AppFooter-CvCvQW_W.js";import{q as n,b as t,n as r,e as l,H as c,k as m}from"./app-eFbQ1v8K.js";const f=n({__name:"CardTitle",props:{class:{}},setup(s){const e=s;return(a,p)=>(m(),t("h3",{"data-slot":"card-title",class:r(l(o)("leading-none font-semibold",e.class))},[c(a.$slots,"default")],2))}});export{f as _};

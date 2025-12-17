@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
+import _PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
 import InputError from '@/components/InputError.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { edit } from '@/routes/user-password';
+import { edit as _edit } from '@/routes/user-password';
+import { wrapRoute } from '@/utils/routes';
 import { Form, Head } from '@inertiajs/vue3';
 
 import HeadingSmall from '@/components/HeadingSmall.vue';
@@ -11,6 +12,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { type BreadcrumbItem } from '@/types';
+
+// Wrap routes and actions
+const edit = wrapRoute(_edit);
+const PasswordController = {
+    update: wrapRoute(_PasswordController.update),
+};
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {

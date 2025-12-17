@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
-import { edit } from '@/routes/profile';
-import { send } from '@/routes/verification';
+import _ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import { edit as _edit } from '@/routes/profile';
+import { send as _send } from '@/routes/verification';
+import { wrapRoute } from '@/utils/routes';
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 
 import DeleteUser from '@/components/DeleteUser.vue';
@@ -13,6 +14,14 @@ import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem } from '@/types';
+
+// Wrap routes and actions
+const edit = wrapRoute(_edit);
+const send = wrapRoute(_send);
+const ProfileController = {
+    update: wrapRoute(_ProfileController.update),
+    destroy: wrapRoute(_ProfileController.destroy),
+};
 
 interface Props {
     mustVerifyEmail: boolean;

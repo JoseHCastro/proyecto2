@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import _ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import { wrapRoute } from '@/utils/routes';
 import { Form } from '@inertiajs/vue3';
 import { useTemplateRef } from 'vue';
 
@@ -19,6 +20,11 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+
+// Wrap actions
+const ProfileController = {
+    destroy: wrapRoute(_ProfileController.destroy),
+};
 
 const passwordInput = useTemplateRef('passwordInput');
 </script>

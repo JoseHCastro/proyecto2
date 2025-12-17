@@ -5,8 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { store } from '@/routes/password/confirm';
+import { store as _store } from '@/routes/password/confirm';
+import { wrapRoute } from '@/utils/routes';
 import { Form, Head } from '@inertiajs/vue3';
+
+const store = wrapRoute(_store);
 </script>
 
 <template>

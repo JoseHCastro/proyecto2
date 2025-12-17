@@ -67,11 +67,17 @@ export function wrapRoute<T extends (...args: any[]) => any>(
 ): T {
     const wrapped = ((...args: any[]) => {
         const result = routeFn(...args);
-        if (typeof result === 'object' && result.url) {
-            return {
-                ...result,
-                url: useRouteUrl(result.url),
-            };
+        if (typeof result === 'object') {
+            const newResult = { ...result };
+            // Handle regular route definitions with 'url'
+            if (result.url) {
+                newResult.url = useRouteUrl(result.url);
+            }
+            // Handle form definitions with 'action'
+            if (result.action) {
+                newResult.action = useRouteUrl(result.action);
+            }
+            return newResult;
         }
         return result;
     }) as T;

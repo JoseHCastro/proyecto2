@@ -3,9 +3,13 @@ import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { logout } from '@/routes';
-import { send } from '@/routes/verification';
+import { logout as _logout } from '@/routes';
+import { send as _send } from '@/routes/verification';
+import { wrapRoute } from '@/utils/routes';
 import { Form, Head } from '@inertiajs/vue3';
+
+const logout = wrapRoute(_logout);
+const send = wrapRoute(_send);
 
 defineProps<{
     status?: string;

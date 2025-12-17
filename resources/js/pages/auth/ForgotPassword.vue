@@ -6,9 +6,13 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/AuthLayout.vue';
-import { login } from '@/routes';
-import { email } from '@/routes/password';
+import { login as _login } from '@/routes';
+import { email as _email } from '@/routes/password';
+import { wrapRoute } from '@/utils/routes';
 import { Form, Head } from '@inertiajs/vue3';
+
+const login = wrapRoute(_login);
+const email = wrapRoute(_email);
 
 defineProps<{
     status?: string;
