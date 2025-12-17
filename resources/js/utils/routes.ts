@@ -4,7 +4,7 @@ import { usePage } from '@inertiajs/vue3';
  * Get the base path from APP_URL for subdirectory deployments
  * Extracts just the path portion (e.g., "/inf513/grupo23sc/proyecto2")
  */
-function getBasePath(): string {
+export function getBasePath(): string {
     const page = usePage();
     const appUrl = (page.props.app_url as string) || '';
     
@@ -17,6 +17,14 @@ function getBasePath(): string {
     } catch {
         return '';
     }
+}
+
+/**
+ * Get the home URL (base path or "/" if no subdirectory)
+ */
+export function getHomeUrl(): string {
+    const basePath = getBasePath();
+    return basePath || '/';
 }
 
 /**

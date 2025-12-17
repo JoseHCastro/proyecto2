@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { dashboard as _dashboard, login as _login, register as _register } from '@/routes';
-import { wrapRoute } from '@/utils/routes';
+import { wrapRoute, getHomeUrl } from '@/utils/routes';
 import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import AppFooter from '@/components/AppFooter.vue';
 const dashboard = wrapRoute(_dashboard);
 const login = wrapRoute(_login);
 const register = wrapRoute(_register);
+const homeUrl = computed(() => getHomeUrl());
 
 const props = withDefaults(
     defineProps<{
@@ -68,7 +69,7 @@ const getDescripcionDisciplina = (disciplina: any) => {
         <nav
             class="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div class="container mx-auto flex h-16 items-center justify-between px-4">
-                <Link href="/" class="flex items-center gap-2">
+                <Link :href="homeUrl" class="flex items-center gap-2">
                 <Dumbbell class="h-8 w-8 text-primary" />
                 <span class="text-2xl font-bold text-foreground">Elevation Gym</span>
                 </Link>
