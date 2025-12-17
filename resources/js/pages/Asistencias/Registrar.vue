@@ -10,6 +10,7 @@ import { Camera, Mail, CheckCircle, XCircle, AlertCircle } from 'lucide-vue-next
 import { successAlert, errorAlert } from '@/composables/useSweetAlert';
 import { Html5Qrcode } from 'html5-qrcode';
 import { store as asistenciasStore } from '@/routes/asistencias';
+import axios from 'axios';
 
 const videoRef = ref(null);
 const scannerRef = ref(null);
@@ -96,25 +97,13 @@ const registrarAsistencia = async (email) => {
     try {
         console.log('Registrando asistencia para:', email);
         
-        const response = await fetch(asistenciasStore.url(), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-            },
-            body: JSON.stringify({ email }),
-        });
+        // Usar axios que tiene el interceptor para agregar el prefijo base
+        const response = await axios.post(asistenciasStore.url(), { email });
 
         console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Error response:', errorText);
-            throw new Error(`HTTP ${response.status}: ${errorText}`);
-        }
+        console.log('Response data:', response.data);
 
-        const data = await response.json();
-        console.log('Response data:', data);
+        const data = response.data;
 
         if (data.success) {
             mostrarAlertaExito(data);
@@ -123,10 +112,16 @@ const registrarAsistencia = async (email) => {
         }
     } catch (error) {
         console.error('Error completo:', error);
-        errorAlert({
-            title: 'Error',
-            text: 'Hubo un problema al registrar la asistencia',
-        });
+        
+        // Si hay respuesta del servidor con datos de error
+        if (error.response?.data) {
+            mostrarAlertaError(error.response.data);
+        } else {
+            errorAlert({
+                title: 'Error',
+                text: 'Hubo un problema al registrar la asistencia',
+            });
+        }
     }
 };
 

@@ -5,16 +5,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Building2, Download } from 'lucide-vue-next';
 import { local as storageLocal } from '@/routes/storage';
+import { useRouteUrl } from '@/utils/routes';
+import { computed } from 'vue';
 
 const props = defineProps({
     usuario: Object,
+});
+
+// Generar URL con prefijo base para la imagen QR
+const qrImageUrl = computed(() => {
+    if (!props.usuario?.url_qr) return '';
+    return useRouteUrl(storageLocal.url({ path: props.usuario.url_qr }));
 });
 
 const descargarQR = () => {
     if (!props.usuario.url_qr) return;
 
     const link = document.createElement('a');
-    link.href = storageLocal.url({ path: props.usuario.url_qr });
+    link.href = qrImageUrl.value;
     link.download = `qr_${props.usuario.name.replace(/\s+/g, '_')}.svg`;
     document.body.appendChild(link);
     link.click();
@@ -47,7 +55,7 @@ const descargarQR = () => {
                     </CardHeader>
                     <CardContent class="flex flex-col items-center gap-6">
                         <div v-if="usuario.url_qr" class="rounded-lg border-4 border-primary p-4 bg-white">
-                            <img :src="storageLocal.url({ path: usuario.url_qr })" :alt="`QR de ${usuario.name}`" class="h-64 w-64" />
+                            <img :src="qrImageUrl" :alt="`QR de ${usuario.name}`" class="h-64 w-64" />
                         </div>
                         <div v-else class="text-center text-muted-foreground">
                             <p>No tienes un código QR generado.</p>
