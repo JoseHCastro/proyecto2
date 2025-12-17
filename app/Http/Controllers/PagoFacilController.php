@@ -22,11 +22,20 @@ class PagoFacilController extends Controller
 
     public function index()
     {
-        // Listar todos los pagos (para ver los generados a clientes)
-        // En producción deberías filtrar por roles (ej: si es admin ve todo, si es cliente solo los suyos)
-        $pagos = PagoFacil::with('user') // Cargar relación usuario si existe para mostrar nombre
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $user = Auth::user();
+        
+        // Si es Cliente, solo mostrar sus propios pagos
+        if ($user->hasRole('Cliente')) {
+            $pagos = PagoFacil::with('user')
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            // Propietario, Secretaria, Instructor ven todos los pagos
+            $pagos = PagoFacil::with('user')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
 
         return Inertia::render('Pagos/Index', [
             'pagos' => $pagos

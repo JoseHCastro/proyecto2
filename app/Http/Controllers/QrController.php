@@ -11,10 +11,8 @@ class QrController extends Controller
     {
         $user = auth()->user();
 
-        // Solo clientes pueden ver su QR
-        if (!$user->hasRole('Cliente')) {
-            return redirect()->route('dashboard');
-        }
+        // Permitir a cualquier usuario autenticado ver su QR
+        // El QR es útil para registrar asistencia
 
         return Inertia::render('Qr/MiQr', [
             'usuario' => $user,

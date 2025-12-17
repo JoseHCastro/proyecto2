@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { ArrowLeft, Download, Building2, MapPin, Phone, Mail } from 'lucide-vue-next';
 import { descargar as recibosDescargar } from '@/routes/recibos';
 import { show as suscripcionesShow } from '@/routes/suscripciones';
+import { useRouteUrl } from '@/utils/routes';
 
 const props = defineProps({
     pago: Object,
@@ -13,7 +14,8 @@ const props = defineProps({
 });
 
 const descargarPDF = () => {
-    window.open(recibosDescargar.url({ pago: props.pago.id }), '_blank');
+    // Usar useRouteUrl para agregar el prefijo base
+    window.open(useRouteUrl(recibosDescargar.url({ pago: props.pago.id })), '_blank');
 };
 
 const imprimir = () => {
