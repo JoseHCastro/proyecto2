@@ -65,7 +65,7 @@ class PagoFacilController extends Controller
             "amount" => $monto,
             "currency" => 2, // 1=USD, 2=BOB (Bolivianos)
             "clientCode" => (string) ($user->id ?? '0'),
-            "callbackUrl" => "http://mail.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/public/payment/callback",
+            "callbackUrl" => "https://mail.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/public/payment/callback",
             "orderDetail" => [
                 [
                     "serial" => 1,
@@ -128,7 +128,7 @@ class PagoFacilController extends Controller
             "amount" => $monto,
             "currency" => 2, // BOB
             "clientCode" => (string) $user->id,
-            "callbackUrl" => "http://mail.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/public/payment/callback",
+            "callbackUrl" => "https://mail.tecnoweb.org.bo/inf513/grupo23sc/proyecto2/public/payment/callback",
             "orderDetail" => [
                 [
                     "serial" => 1,
