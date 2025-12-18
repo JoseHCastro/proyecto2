@@ -30,8 +30,8 @@ class AppServiceProvider extends ServiceProvider
         if (str_contains($appUrl, 'tecnoweb.org.bo')) {
             URL::forceRootUrl($appUrl);
             
-            // Si usas HTTPS, descomenta la siguiente línea
-            // URL::forceScheme('http');
+            // Forzar HTTPS para todas las URLs generadas por Laravel
+            URL::forceScheme('https');
         }
     }
 }
