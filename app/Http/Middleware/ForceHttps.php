@@ -14,8 +14,8 @@ class ForceHttps
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Solo forzar HTTPS en producción (tecnoweb.org.bo)
-        if (str_contains(config('app.url'), 'tecnoweb.org.bo')) {
+        // Solo forzar HTTPS en producción (www.tecnoweb.org.bo)
+        if (str_contains(config('app.url'), 'www.tecnoweb.org.bo')) {
             // Verificar si la petición NO es segura
             if (!$request->secure() && !$this->isSecureRequest($request)) {
                 return redirect()->secure($request->getRequestUri(), 301);
