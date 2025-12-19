@@ -78,13 +78,6 @@ const getEstadoPagoBadge = (estado) => {
     return variants[estado] || 'secondary';
 };
 
-const esPrimerPagoImpago = (pago) => {
-    const pagosAnterioresImpagos = props.suscripcion.pagos.filter(p => 
-        new Date(p.vence) < new Date(pago.vence) && p.estado === 'impaga'
-    );
-    return pagosAnterioresImpagos.length === 0;
-};
-
 const calcularDiasRestantes = (fechaFin) => {
     const hoy = new Date();
     const fin = new Date(fechaFin);
@@ -242,7 +235,7 @@ const calcularDiasRestantes = (fechaFin) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button 
-                                                    v-if="pago.estado === 'impaga' && esPrimerPagoImpago(pago)"
+                                                    v-if="pago.estado === 'impaga'"
                                                     variant="default" 
                                                     size="sm"
                                                     @click="abrirDialogPago(pago)"
