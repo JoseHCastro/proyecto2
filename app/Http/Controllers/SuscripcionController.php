@@ -221,16 +221,6 @@ class SuscripcionController extends Controller
     {
         $pago = Pago::with('suscripcion')->findOrFail($pagoId);
 
-        // Verificar que no haya pagos impagos anteriores
-        $pagosAnterioresImpagos = Pago::where('suscripcion_id', $pago->suscripcion_id)
-            ->where('vence', '<', $pago->vence)
-            ->where('estado', 'impaga')
-            ->count();
-
-        if ($pagosAnterioresImpagos > 0) {
-            return back()->with('error', 'Debe pagar las cuotas anteriores primero');
-        }
-
         $validated = $request->validate([
             'metodo' => 'required|in:efectivo,QR,tarjeta',
         ]);
