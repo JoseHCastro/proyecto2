@@ -235,7 +235,7 @@ const calcularDiasRestantes = (fechaFin) => {
                                         <TableCell class="text-right">
                                             <div class="flex justify-end gap-2">
                                                 <Button 
-                                                    v-if="pago.estado === 'impaga'"
+                                                    v-if="pago.estado === 'impaga' || pago.estado === 'pendiente'"
                                                     variant="default" 
                                                     size="sm"
                                                     @click="abrirDialogPago(pago)"
